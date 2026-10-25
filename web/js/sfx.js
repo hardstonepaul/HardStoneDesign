@@ -1,11 +1,17 @@
-// Sound effects synthesized with the Web Audio API (no audio files). Off by default.
+// Sound effects synthesized with the Web Audio API (no audio files). On by default;
+// browsers only allow audio after the first click / key press, so until then they are silent.
 
 const KEY = 'hs-sfx';
 let ctx = null;
-let enabled = false;
+let enabled = true;
+let unlocked = false;
 let noiseBuffer = null;
 
-try { enabled = localStorage.getItem(KEY) === 'on'; } catch { /* storage blocked */ }
+try { enabled = localStorage.getItem(KEY) !== 'off'; } catch { /* storage blocked */ }
+
+for (const type of ['pointerdown', 'keydown']) {
+  addEventListener(type, () => { unlocked = true; }, { once: true, capture: true });
+}
 
 export function audioContext() {
   ctx ??= new AudioContext();
@@ -14,7 +20,7 @@ export function audioContext() {
 }
 
 function tone({ type = 'square', f = 440, f2, dur = 0.08, vol = 0.08, t = 0 }) {
-  if (!enabled) return;
+  if (!enabled || !unlocked) return;
   const c = audioContext();
   const t0 = c.currentTime + t;
   const osc = c.createOscillator();
@@ -30,7 +36,7 @@ function tone({ type = 'square', f = 440, f2, dur = 0.08, vol = 0.08, t = 0 }) {
 }
 
 export function noise({ dur = 0.1, vol = 0.1, t = 0, freq = 2000, filter = 'bandpass', force = false }) {
-  if (!enabled && !force) return;
+  if ((!enabled || !unlocked) && !force) return;
   const c = audioContext();
   if (!noiseBuffer) {
     noiseBuffer = c.createBuffer(1, c.sampleRate, c.sampleRate);

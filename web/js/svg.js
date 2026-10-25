@@ -94,6 +94,34 @@ export function partBox(svg, name) {
   };
 }
 
+// Same as partBox, but falls back to a data-box-{name}="x y w h" attribute on the host,
+// in the SVG's viewBox units — for exports without a named group for that area.
+export function markerBox(svg, name, host) {
+  const box = partBox(svg, name);
+  const attr = host?.getAttribute(`data-box-${name}`);
+  if (box || !attr) return box;
+  return viewBoxPercent(svg, attr.trim().split(/[\s,]+/).map(Number));
+}
+
+export function viewBoxPercent(svg, [x, y, w, h]) {
+  const vb = svg.viewBox.baseVal;
+  return {
+    x: ((x - vb.x) / vb.width) * 100,
+    y: ((y - vb.y) / vb.height) * 100,
+    w: (w / vb.width) * 100,
+    h: (h / vb.height) * 100,
+  };
+}
+
+// Devices assembled from separate exports: every [data-box="x y w h"] inside root is
+// positioned over the base SVG (x/y/w in its viewBox units → --x/--y/--w in %).
+export function placeByBox(root, baseSvg) {
+  for (const el of root.querySelectorAll('[data-box]')) {
+    const box = viewBoxPercent(baseSvg, el.dataset.box.trim().split(/[\s,]+/).map(Number));
+    for (const k of ['x', 'y', 'w', 'h']) el.style.setProperty(`--${k}`, `${box[k]}%`);
+  }
+}
+
 // Writes a part box as CSS variables: --{prefix}-x / -y / -w / -h
 export function setBoxVars(el, prefix, box) {
   if (!box) return;

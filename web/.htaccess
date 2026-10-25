@@ -1,0 +1,27 @@
+# HardStone · Apache settings: compression + browser caching.
+# Every block is wrapped in <IfModule>, so a missing module is skipped instead of breaking the site.
+
+# ───── Compression ─────
+# Brotli first (smaller), gzip as fallback. Images are already compressed and are left alone.
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain application/javascript text/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript text/javascript application/json image/svg+xml
+</IfModule>
+
+# ───── Caching ─────
+# File names are not versioned, so:
+#   · HTML, CSS and JS are always revalidated (a cheap 304 when unchanged) → a new upload shows up at once.
+#   · Images, SVGs, audio and fonts are cached for 7 days. After replacing one, rename it (or add ?v=2
+#     where it is referenced) if visitors must see it immediately.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js|json)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  <FilesMatch "\.(jpe?g|png|webp|avif|gif|svg|ico|mp3|ogg|woff2?)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>

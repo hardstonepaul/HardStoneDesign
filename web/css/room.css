@@ -3,11 +3,18 @@
    so the whole scene scales as one piece. Sizes inside use cqi (1% of the stage width). */
 
 .room {
+  /* Stage width, shared with the bottom padding below.
+     ÷ 1.32: the controllers hang ~16% outside the stage on each side.
+     Height budget: 4.5rem top (the logo rises into it) + stage (649/521 W) + table peek (0.205 W) ≤ 100svh */
+  --stage-w: min((100% - 2rem) / 1.32, 860px, (100svh - 4.5rem) / 1.4507);
+  --table-peek: 0.205;
+
   position: relative;
   display: grid;
-  place-items: center;
+  /* Scene sits on the bottom edge: the section cuts through the TV table */
+  place-items: end center;
   min-height: 100svh;
-  padding-block: 3.5rem 2rem;
+  padding-block: 4.5rem calc(var(--stage-w) * var(--table-peek));
   overflow: clip;
   background:
     radial-gradient(55% 40% at 50% 64%, var(--screen-glow), transparent 70%),
@@ -18,37 +25,34 @@
 
 /* Portrait phones: the scene is width-bound, don't stretch the room to full height */
 @media (max-aspect-ratio: 3 / 4) {
-  .room { min-height: auto; padding-block: 4.5rem 3rem; }
+  .room { min-height: auto; padding-top: 4.5rem; }
 }
 
 .room-stage {
   position: relative;
-  inline-size: min(100% - 2rem, 860px, (100svh - 5.5rem) * 521 / 649);
+  inline-size: var(--stage-w);
   aspect-ratio: 521 / 649;
   container: stage / inline-size;
 
   & > * { position: absolute; }
+}
 
-  /* TV stand (placeholder until the room background exists) */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: auto -6% -3.2% -6%;
-    block-size: 3.6%;
-    border-radius: 1cqi 1cqi 0.4cqi 0.4cqi;
-    background: linear-gradient(var(--wood), var(--wood-dark));
-    box-shadow: 0 2cqi 4cqi rgb(0 0 0 / 0.45);
-    z-index: 0;
-  }
+/* ───── TV table: wider than the stage, its lower part is clipped by the section ───── */
+.tv-table {
+  left: -42.9%;
+  top: 90.6%;
+  inline-size: 185.8%;
+  z-index: 1;
 }
 
 /* ───── Logo ───── */
 .logo {
   inset-inline: 0;
-  top: 5.2%;
+  /* Baseline just below the cartridges' top edge: they only overlap the bottom of the letters */
+  top: -5.3%;
   z-index: 1;
   text-align: center;
-  font: 300 15.6cqi/1 var(--font-ui);
+  font: 300 19.2cqi/1 var(--font-ui);
   letter-spacing: -0.035em;
   color: var(--gray-0);
   text-shadow: 0 0.6cqi 2cqi rgb(0 0 0 / 0.35);
@@ -71,7 +75,7 @@
   display: grid;
   place-items: center;
   padding-inline: 2%;
-  font: 700 1.75cqi/1 var(--font-pixel);
+  font: 700 2.2cqi/1 var(--font-pixel);
   white-space: nowrap;
   text-transform: uppercase;
   text-align: center;
@@ -83,7 +87,7 @@
   position: absolute;
   left: var(--x);
   top: var(--y);
-  inline-size: 14.6cqi;
+  inline-size: 18.4cqi;
   pointer-events: auto;
   filter: drop-shadow(0 0.7cqi 0.6cqi rgb(0 0 0 / 0.35));
   transition: translate 0.3s var(--ease-back), rotate 0.3s var(--ease-back);
@@ -93,7 +97,8 @@
     rotate: -4deg;
   }
 
-  /* Empty spot left on the shelf while the cartridge is in the console */
+  /* Empty spot left on the shelf while the cartridge is in the console:
+     invisible (as in the design) until hovered or focused */
   &[aria-pressed="true"] {
     filter: none;
 
@@ -103,13 +108,88 @@
       content: "";
       position: absolute;
       inset: 4% 2% 4%;
-      border: 0.35cqi dashed oklch(from var(--cart-yellow) l c h / 0.45);
+      border: 0.35cqi dashed transparent;
       border-radius: 1cqi;
       transition: border-color 0.2s;
     }
 
-    &:hover::before { border-color: var(--cart-yellow); }
+    &:is(:hover, :focus-visible)::before { border-color: oklch(from var(--cart-yellow) l c h / 0.7); }
   }
+}
+
+/* Invite: while the console is empty, free cartridges hop one after another */
+.cart-shelf.is-inviting .cart[aria-pressed="false"]:not(:hover, :focus-visible) {
+  animation: cart-invite 3.2s var(--ease-out) infinite;
+  animation-delay: calc(var(--i, 0) * 0.16s);
+}
+
+@keyframes cart-invite {
+  0%, 70%, 94%, 100% {
+    translate: 0 0;
+    rotate: 0deg;
+    filter: drop-shadow(0 0.7cqi 0.6cqi rgb(0 0 0 / 0.35));
+  }
+  76% {
+    translate: 0 -2.2cqi;
+    rotate: -7deg;
+    filter: drop-shadow(0 1.6cqi 1cqi rgb(0 0 0 / 0.3)) drop-shadow(0 0 1.4cqi oklch(from var(--cart-yellow) l c h / 0.7));
+  }
+  82% { translate: 0 0; rotate: 4deg; }
+  88% { translate: 0 -0.8cqi; rotate: -2deg; }
+}
+
+/* Console speech bubble: "Pick a game!" */
+.console-bubble {
+  left: 61%;
+  top: 17.4%;
+  z-index: 7;
+  padding: 0.9cqi 1.4cqi;
+  font: 400 2.2cqi/1.1 var(--font-pixel);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--plum-900);
+  background: var(--gray-0);
+  border: 0.45cqi solid var(--plum-900);
+  box-shadow: 0.6cqi 0.6cqi 0 rgb(0 0 0 / 0.35);
+  transform-origin: 0% 100%;
+  opacity: 0;
+  scale: 0.5;
+  transition: opacity 0.2s, scale 0.35s var(--ease-back);
+  pointer-events: none;
+
+  /* Pixel tail pointing down-left at the console's face */
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+
+  &::before {
+    left: 1.2cqi;
+    inline-size: 2.4cqi;
+    block-size: 2.4cqi;
+    background: var(--plum-900);
+  }
+
+  &::after {
+    left: calc(1.2cqi + 0.45cqi);
+    top: calc(100% - 0.05cqi);
+    inline-size: 1.5cqi;
+    block-size: 1.5cqi;
+    background: var(--gray-0);
+  }
+
+  &.is-visible {
+    opacity: 1;
+    scale: 1;
+    animation: bubble-bob 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes bubble-bob {
+  50% { translate: 0 -0.6cqi; }
 }
 
 /* Cartridge clone used during the flight to / from the console */
@@ -126,7 +206,9 @@
   inset: 0;
   inline-size: 100%;
   block-size: 100%;
-  z-index: 3;
+  overflow: visible;
+  /* In front of the console (plugged into its sockets), behind the controllers */
+  z-index: 5;
   fill: none;
   stroke: #2b2430;
   stroke-width: 4.5;
@@ -135,16 +217,26 @@
 }
 
 /* ───── Console with face ───── */
+/* Centred on the TV, sitting on its top edge */
 .console {
-  left: 36.9%;
-  top: 25%;
-  inline-size: 27.4%;
+  left: 33.5%;
+  top: 23.2%;
+  inline-size: 33%;
   z-index: 4;
 }
 
 .console-art {
   position: relative;
   z-index: 1;
+  transform-origin: 50% 100%;
+}
+
+/* Face layer: same box as console.svg, stacked on top */
+.console-face {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
   transform-origin: 50% 100%;
 }
 
@@ -161,53 +253,72 @@
   position: absolute;
   left: 50%;
   bottom: 0;
-  inline-size: 13.8cqi;
-  translate: -50% 34%;
-  rotate: -3deg;
+  inline-size: 17.7cqi;
+  translate: -50% 26%;
+  rotate: -6deg;
   transition: translate 0.25s var(--ease-out);
 
-  &:hover, &:focus-visible { translate: -50% 24%; }
+  &:hover, &:focus-visible { translate: -50% 14%; }
 }
 
-.console svg {
-  & [data-part="face"] {
-    translate: calc(var(--look-x, 0) * 2px) calc(var(--look-y, 0) * 1.5px);
-    transition: translate 0.2s var(--ease-out);
+/* Face parts (separate exports) placed by data-box in console.svg units.
+   The whole face drifts a little toward the cursor; the eyes drift further. */
+.console-face {
+  translate: calc(var(--look-x, 0) * 0.35cqi) calc(var(--look-y, 0) * 0.2cqi);
+  transition: translate 0.2s var(--ease-out);
+
+  & > [data-box] {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    inline-size: var(--w);
   }
-
-  & :is([data-part="eye-left"], [data-part="eye-right"]) {
-    transform-box: fill-box;
-    transform-origin: center;
-    translate: calc(var(--look-x, 0) * 5px) calc(var(--look-y, 0) * 4px);
-    transition: translate 0.12s var(--ease-out), scale 0.07s linear;
-  }
-
-  &.is-blinking :is([data-part="eye-left"], [data-part="eye-right"]) { scale: 1 0.12; }
-
-  & [data-part="power-led"] { transition: fill 0.3s; }
 }
 
-/* Mouth expressions: only applies if the SVG has mouth-smile / mouth-o / mouth-happy groups */
-.console {
-  & [data-part^="mouth-"] { display: none; }
-  &[data-mood="smile"] [data-part="mouth-smile"],
-  &[data-mood="o"] [data-part="mouth-o"],
-  &[data-mood="happy"] [data-part="mouth-happy"] { display: inline; }
+.face-eye {
+  /* Upward look is limited so the eyes stay under the console's top outline */
+  translate: calc(var(--look-x, 0) * 0.8cqi) calc(clamp(-0.6, var(--look-y, 0), 1) * 0.6cqi);
+  transition: translate 0.12s var(--ease-out), scale 0.07s linear;
 
-  &.is-on [data-part="power-led"] {
-    fill: var(--red-500);
-    filter: drop-shadow(0 0 3px var(--red-400));
-  }
+  .console-face.is-blinking & { scale: 1 0.12; }
+}
+
+/* Mouth moods: smile (export) · happy (bigger grin) · o (hovering a cartridge) */
+.face-mouth {
+  transform-origin: 50% 30%;
+  transition: scale 0.25s var(--ease-back), opacity 0.1s;
+
+  .console[data-mood="happy"] & { scale: 1.18 1.3; }
+  .console[data-mood="o"] & { opacity: 0; }
+}
+
+.face-mouth-o {
+  aspect-ratio: 18 / 22;
+  border-radius: 50%;
+  background: #393838;
+  opacity: 0;
+  scale: 0.4;
+  transition: scale 0.2s var(--ease-back), opacity 0.1s;
+
+  .console[data-mood="o"] & { opacity: 1; scale: 1; }
 }
 
 /* ───── Controllers ───── */
+/* Controllers hang from their cables: js/cables.js drives --dx / --dy / --dr,
+   and they swing around the cable plug at the top */
 .controller {
-  z-index: 4;
+  z-index: 6;
+  translate: var(--dx, 0px) var(--dy, 0px);
+  rotate: calc(var(--base-rot, 0deg) + var(--dr, 0deg));
+  transform-origin: 44% 3%;
+  cursor: pointer;
   filter: drop-shadow(0 0.5cqi 0.5cqi rgb(0 0 0 / 0.35));
+  -webkit-tap-highlight-color: transparent;
 }
 
-.controller--left { left: 18.4%; top: 33.6%; inline-size: 14.2%; rotate: -6deg; }
-.controller--right { left: 65.6%; top: 32.4%; inline-size: 14.2%; rotate: 5deg; }
+/* Hanging on the outside of the TV's left and right edges */
+.controller--left { left: -15.5%; top: 43.8%; inline-size: 21.9%; --base-rot: -4deg; }
+.controller--right { left: 91.7%; top: 42.3%; inline-size: 21.9%; --base-rot: 12deg; }
 
 /* ───── TV ───── */
 .tv {
@@ -217,8 +328,24 @@
   z-index: 2;
   filter: drop-shadow(0 1.5cqi 2.5cqi rgb(0 0 0 / 0.45));
 
-  &.is-on [data-part="power-led"] {
-    fill: var(--red-500);
-    filter: drop-shadow(0 0 4px var(--red-400));
+  & .tv-clip { position: absolute; }
+}
+
+/* Power LED drawn over the frame's button circle */
+.tv-led {
+  position: absolute;
+  left: var(--led-x);
+  top: var(--led-y);
+  inline-size: var(--led-w);
+  block-size: var(--led-h);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--red-400), var(--red-700));
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+
+  .tv.is-on & {
+    opacity: 1;
+    box-shadow: 0 0 1.2cqi var(--red-500);
   }
 }

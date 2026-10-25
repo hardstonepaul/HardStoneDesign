@@ -1,14 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 100">
-  <!-- PLACEHOLDER: replace with your Illustrator export (keep the group ids) -->
-  <g id="shell">
-    <path d="M18 80h116v10a6 6 0 0 1-6 6H24a6 6 0 0 1-6-6z" fill="#e8b600"/>
-    <rect x="3" y="4" width="146" height="80" rx="7" fill="#ffd200" stroke="#e8b600" stroke-width="3"/>
-  </g>
-  <g id="label">
-    <rect x="17" y="14" width="118" height="58" rx="3" fill="#73cff5" stroke="#e8b600" stroke-width="2"/>
-  </g>
-  <g id="shine" fill="#fff">
-    <path d="M70 15h22L64 71H42z" opacity=".3"/>
-    <path d="M98 15h8L78 71h-8z" opacity=".3"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.23 176.21">
+  <defs>
+    <style>
+      .cls-1 {
+        isolation: isolate;
+      }
+
+      .cls-2 {
+        filter: url(#drop-shadow-1);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.23px;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #ffd800;
+        stroke: #faa41e;
+      }
+
+      .cls-4 {
+        fill: #fff;
+        mix-blend-mode: screen;
+        opacity: .25;
+      }
+
+      .cls-5 {
+        fill: #74d1f6;
+      }
+
+      .cls-3 {
+        filter: url(#drop-shadow-2);
+        stroke-miterlimit: 10;
+        stroke-width: .62px;
+      }
+    </style>
+    <filter id="drop-shadow-1" x="0" y="0" width="283.23" height="176.21" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="3.69"/>
+      <feGaussianBlur result="blur" stdDeviation="0"/>
+      <feFlood flood-color="#faa41e" flood-opacity="1"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="drop-shadow-2" x="16.98" y="14.79" width="249.26" height="112.65" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="-.98"/>
+      <feGaussianBlur result="blur-2" stdDeviation="0"/>
+      <feFlood flood-color="#faa41e" flood-opacity="1"/>
+      <feComposite in2="blur-2" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="cls-1">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Layer_1-2" data-name="Layer 1">
+        <g>
+          <path class="cls-2" d="M.62,4.85v133.94h17.35v33.12h247.29v-33.12h17.35V4.85c0-2.34-1.9-4.23-4.23-4.23H4.85C2.51.62.62,2.51.62,4.85Z"/>
+          <rect class="cls-3" x="17.29" y="16.08" width="248.65" height="111.05" rx="13.27" ry="13.27"/>
+          <rect class="cls-5" x="21.52" y="19.69" width="240.18" height="103.83" rx="9.69" ry="9.69"/>
+          <polygon class="cls-4" points="51 171.91 130.84 .62 199.68 .62 129.56 171.91 51 171.91"/>
+        </g>
+      </g>
+    </g>
   </g>
 </svg>

@@ -1,0 +1,52 @@
+<svg width="800" height="250" viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Main body -->
+  <rect x="50" y="40" width="700" height="140"
+        fill="#6b3e2e" stroke="#4a2418" stroke-width="3"/>
+
+  <!-- Left cabinet -->
+  <rect x="50" y="40" width="150" height="140"
+        fill="#754534" stroke="#4a2418" stroke-width="2"/>
+  <rect x="70" y="60" width="110" height="100"
+        fill="#85503c" stroke="#5a3022" stroke-width="1"/>
+
+  <!-- Right cabinet -->
+  <rect x="600" y="40" width="150" height="140"
+        fill="#754534" stroke="#4a2418" stroke-width="2"/>
+  <rect x="620" y="60" width="110" height="100"
+        fill="#85503c" stroke="#5a3022" stroke-width="1"/>
+
+  <!-- Center open shelves -->
+  <rect x="200" y="40" width="400" height="140"
+        fill="#4a2418" stroke="#3b1a12" stroke-width="2"/>
+  <rect x="205" y="45" width="390" height="60"
+        fill="#2c120d"/>
+  <rect x="205" y="110" width="390" height="65"
+        fill="#381810"/>
+
+  <!-- Shelf divider -->
+  <rect x="200" y="105" width="400" height="8"
+        fill="#6b3e2e"/>
+
+  <!-- Handles -->
+  <rect x="85" y="65" width="26" height="8" rx="4"
+        fill="#151515"/>
+  <rect x="689" y="65" width="26" height="8" rx="4"
+        fill="#151515"/>
+
+  <!-- Legs -->
+  <polygon points="85,180 98,180 92,220 78,220"
+           fill="#8d5a44"/>
+  <polygon points="145,180 158,180 172,220 158,220"
+           fill="#8d5a44"/>
+
+  <polygon points="642,180 655,180 642,220 628,220"
+           fill="#8d5a44"/>
+  <polygon points="702,180 715,180 722,220 708,220"
+           fill="#8d5a44"/>
+
+  <!-- Top highlight -->
+  <rect x="50" y="40" width="700" height="8"
+        fill="#8f5d47" opacity="0.45"/>
+
+</svg>

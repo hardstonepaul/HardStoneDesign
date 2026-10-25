@@ -1,7 +1,7 @@
 // Beeper = contact form. One field per "page"; the beeper's own buttons navigate.
 // Sending opens the visitor's mail app (mailto:). To switch to a form service later,
 // replace sendMessage() only.
-import { part, partBox, setBoxVars } from './svg.js';
+import { markerBox, placeByBox, setBoxVars } from './svg.js';
 import { sfx } from './sfx.js';
 import { CONFIG } from './config.js';
 
@@ -22,12 +22,11 @@ export function initBeeper(root) {
   const clock = form.querySelector('.lcd-clock');
   let step = 0;
 
-  setBoxVars(root, 'screen', partBox(svg, 'screen'));
-  for (const btn of root.querySelectorAll('.hotspot')) {
-    const box = partBox(svg, `btn-${btn.dataset.btn}`);
-    if (!box) { btn.hidden = true; continue; }
-    for (const k of ['x', 'y', 'w', 'h']) btn.style.setProperty(`--${k}`, `${box[k]}%`);
-  }
+  const buttons = [...root.querySelectorAll('.device-btn')];
+
+  // The beeper is assembled from separate exports: body + one SVG per button
+  setBoxVars(root, 'screen', markerBox(svg, 'screen', root));
+  placeByBox(root, svg);
 
   const field = (i = step) => steps[i].querySelector('input, textarea');
 
@@ -64,7 +63,7 @@ export function initBeeper(root) {
     up: () => { sfx.click(); go(step - 1); },
     down: next,
     ok: next,
-    menu: () => {
+    clear: () => {
       const input = field();
       if (input) input.value = '';
       sfx.click();
@@ -72,10 +71,9 @@ export function initBeeper(root) {
     },
   };
 
-  for (const btn of root.querySelectorAll('.hotspot')) {
-    const svgPart = part(svg, `btn-${btn.dataset.btn}`);
-    btn.addEventListener('pointerdown', () => svgPart?.classList.add('is-pressed'));
-    for (const type of ['pointerup', 'pointerleave', 'blur']) btn.addEventListener(type, () => svgPart?.classList.remove('is-pressed'));
+  for (const btn of buttons) {
+    btn.addEventListener('pointerdown', () => btn.classList.add('is-pressed'));
+    for (const type of ['pointerup', 'pointerleave', 'blur']) btn.addEventListener(type, () => btn.classList.remove('is-pressed'));
     btn.addEventListener('click', () => actions[btn.dataset.btn]?.());
   }
 

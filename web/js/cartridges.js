@@ -1,5 +1,5 @@
 // The menu: cartridges fly into the console, the console reacts, the TV changes channel.
-import { partBox, setBoxVars } from './svg.js';
+import { markerBox, setBoxVars } from './svg.js';
 import { sfx } from './sfx.js';
 
 const IDS = ['info', 'works', 'links'];
@@ -7,15 +7,16 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const fromHash = () => (IDS.includes(location.hash.slice(1)) ? location.hash.slice(1) : null);
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export function initCartridges({ stage, face, tv }) {
+export function initCartridges({ stage, face, tv, cables }) {
   const buttons = new Map([...stage.querySelectorAll('.cart')].map((b) => [b.dataset.cart, b]));
   const consoleEl = stage.querySelector('.console');
   const consoleArt = consoleEl.querySelector('.console-art');
   const slotCart = consoleEl.querySelector('.slot-cart');
 
   // Label area of the cartridge art and the slot position on the console
-  setBoxVars(stage, 'label', partBox(stage.querySelector('.cart-art svg'), 'label'));
-  setBoxVars(consoleEl, 'slot', partBox(consoleArt.querySelector('svg'), 'slot'));
+  // (named groups win; otherwise data-box-label / data-box-slot on the stage / console)
+  setBoxVars(stage, 'label', markerBox(stage.querySelector('.cart-art svg'), 'label', stage));
+  setBoxVars(consoleEl, 'slot', markerBox(consoleArt.querySelector('svg'), 'slot', consoleEl));
 
   let current = null; // cartridge in the console
   let wanted;         // last requested cartridge (null = none)
@@ -42,7 +43,7 @@ export function initCartridges({ stage, face, tv }) {
     const dy = to.cy - from.cy;
     const lift = Math.max(40, Math.abs(dy) * 0.6);
     const scale = toEl.offsetWidth / fromEl.offsetWidth;
-    const endRotate = back ? 0 : -3;
+    const endRotate = back ? 0 : -6;
     const animation = clone.animate([
       { transform: 'translate(0, 0) rotate(0deg) scale(1)' },
       { transform: `translate(${dx * 0.45}px, ${Math.min(0, dy) * 0.45 - lift}px) rotate(${back ? 12 : -16}deg) scale(1.14)`, offset: 0.45 },
@@ -72,7 +73,7 @@ export function initCartridges({ stage, face, tv }) {
 
     slotCart.style.visibility = '';
     await slotCart.animate(
-      [{ translate: '-50% -58%' }, { translate: '-50% 34%' }],
+      [{ translate: '-50% -58%' }, { translate: '-50% 26%' }],
       { duration: reducedMotion.matches ? 1 : 200, easing: 'cubic-bezier(.55,0,.8,.2)' },
     ).finished;
     slotCart.style.translate = '';
@@ -81,11 +82,14 @@ export function initCartridges({ stage, face, tv }) {
     sfx.insert();
     consoleEl.classList.add('is-on');
     if (!reducedMotion.matches) {
-      consoleArt.animate([
-        { scale: '1 1' }, { scale: '1.04 0.9' }, { scale: '0.98 1.04' }, { scale: '1 1' },
-      ], { duration: 380, easing: 'ease-out' });
+      for (const layer of consoleEl.querySelectorAll('.console-art, .console-face')) {
+        layer.animate([
+          { scale: '1 1' }, { scale: '1.04 0.9' }, { scale: '0.98 1.04' }, { scale: '1 1' },
+        ], { duration: 380, easing: 'ease-out' });
+      }
     }
     face.mood('happy', 1400);
+    cables?.kick();
     current = id;
     await tv.show(id);
   }
@@ -98,7 +102,7 @@ export function initCartridges({ stage, face, tv }) {
     const tvOff = tv.off();
     slotCart.style.transition = 'none';
     await slotCart.animate(
-      [{ translate: '-50% 34%' }, { translate: '-50% -58%' }],
+      [{ translate: '-50% 26%' }, { translate: '-50% -58%' }],
       { duration: reducedMotion.matches ? 1 : 230, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'forwards' },
     ).finished;
 
@@ -113,8 +117,44 @@ export function initCartridges({ stage, face, tv }) {
     await tvOff;
   }
 
+  // ───── Invite: while the console is empty, the cartridges hop in turn and the console asks ─────
+  const shelf = stage.querySelector('.cart-shelf');
+  const bubble = stage.querySelector('.console-bubble');
+  const HOP_EVERY = 3200; // = cart-invite animation length in room.css (hop at ~72%)
+  let inviteTimer = 0;
+  let lookTimer = 0;
+  let hovering = false;
+
+  function setInvite(on) {
+    clearTimeout(inviteTimer);
+    clearTimeout(lookTimer);
+    shelf.classList.toggle('is-inviting', on);
+    bubble.classList.toggle('is-visible', on);
+    if (!on) return;
+    // The console glances up at the shelf each time the cartridges hop
+    lookTimer = setTimeout(function glance() {
+      if (!hovering && !busy) {
+        const free = [...buttons.values()].filter((b) => b.getAttribute('aria-pressed') === 'false');
+        face.watch(free[Math.floor(free.length / 2)]);
+        face.mood('o');
+        setTimeout(() => {
+          if (hovering || busy) return;
+          face.watch(null);
+          face.mood('smile');
+        }, 1100);
+      }
+      lookTimer = setTimeout(glance, HOP_EVERY);
+    }, HOP_EVERY * 0.7);
+  }
+
+  function inviteSoon() {
+    clearTimeout(inviteTimer);
+    inviteTimer = setTimeout(() => { if (!current && !busy) setInvite(true); }, 2500);
+  }
+
   async function run() {
     busy = true;
+    setInvite(false);
     while (wanted !== undefined && wanted !== current) {
       const next = wanted;
       if (current) await eject();
@@ -124,6 +164,7 @@ export function initCartridges({ stage, face, tv }) {
     }
     wanted = undefined;
     busy = false;
+    if (!current) inviteSoon();
   }
 
   function request(id, { push = true } = {}) {
@@ -135,12 +176,14 @@ export function initCartridges({ stage, face, tv }) {
   for (const [id, btn] of buttons) {
     btn.addEventListener('click', () => request(btn.getAttribute('aria-pressed') === 'true' ? null : id));
     const look = () => {
+      hovering = true;
       if (busy || btn.getAttribute('aria-pressed') === 'true') return;
       face.watch(btn);
       face.mood('o');
       sfx.hover();
     };
     const unlook = () => {
+      hovering = false;
       if (busy) return;
       face.watch(null);
       face.mood('smile');
@@ -158,4 +201,5 @@ export function initCartridges({ stage, face, tv }) {
   tv.show('boot', { instant: true });
   const start = fromHash();
   if (start) wait(500).then(() => request(start, { push: false }));
+  else inviteSoon();
 }

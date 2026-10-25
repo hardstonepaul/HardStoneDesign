@@ -21,9 +21,9 @@
 <body>
   <a class="skip-link" href="#tv-screen">Skip to the TV screen</a>
 
-  <button class="sound-toggle" type="button" aria-pressed="false">
+  <button class="sound-toggle" type="button" aria-pressed="true">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
-    <span class="sound-toggle-label">SFX OFF</span>
+    <span class="sound-toggle-label">SFX ON</span>
   </button>
 
   <p class="visually-hidden" id="sr-status" role="status" aria-live="polite"></p>
@@ -31,40 +31,57 @@
   <main>
     <!-- §1 · Gaming room: cartridges (menu) → console → TV -->
     <section class="room" id="room" aria-label="Gaming room">
-      <div class="room-stage">
+      <!-- data-box-label: blue label area in cartridge.svg viewBox units -->
+      <div class="room-stage" data-box-label="21.52 19.69 240.18 103.83">
         <h1 class="logo">HardStone <span class="visually-hidden">· Paul Suarez, Design Engineer</span></h1>
 
         <nav class="cart-shelf" aria-label="Main menu">
-          <button class="cart" type="button" data-cart="info" aria-pressed="false" aria-controls="tv-screen" style="--x: 21.5%; --y: 12%">
+          <button class="cart" type="button" data-cart="info" aria-pressed="false" aria-controls="tv-screen" style="--x: 16.3%; --y: 7%; --i: 0">
             <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">My info</span></span>
           </button>
-          <button class="cart" type="button" data-cart="works" aria-pressed="false" aria-controls="tv-screen" style="--x: 41.6%; --y: 13.6%">
+          <button class="cart" type="button" data-cart="works" aria-pressed="false" aria-controls="tv-screen" style="--x: 40.9%; --y: 5.8%; --i: 1">
             <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">Works</span></span>
           </button>
-          <button class="cart" type="button" data-cart="links" aria-pressed="false" aria-controls="tv-screen" style="--x: 61.4%; --y: 11.9%">
+          <button class="cart" type="button" data-cart="links" aria-pressed="false" aria-controls="tv-screen" style="--x: 64%; --y: 7%; --i: 2">
             <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">Links</span></span>
           </button>
         </nav>
 
         <svg class="cables" viewBox="0 0 521 649" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M226 206 C228 248 196 252 186 230 C176 206 140 198 133 226"/>
-          <path d="M288 204 C290 246 318 250 330 228 C342 204 372 196 376 214"/>
+          <!-- drawn live by js/cables.js -->
+          <path/>
+          <path/>
         </svg>
 
-        <div class="console" data-mood="smile">
+        <!-- data-box-slot: where the cartridge goes in, in console.svg viewBox units -->
+        <div class="console" data-mood="smile" data-box-slot="117.7 40 140 4" data-ports="86 140 300 128">
           <div class="console-slot">
             <button class="slot-cart" type="button" hidden aria-label="Eject cartridge" title="Eject">
               <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label"></span></span>
             </button>
           </div>
           <div class="console-art" data-svg="assets/svg/console.svg"></div>
+          <!-- Face: separate exports; data-box = position in console.svg viewBox units (x y w h) -->
+          <div class="console-face" aria-hidden="true">
+            <div class="face-eye" data-box="151.13 35.35 21.84 49.27" data-svg="assets/svg/eye-left.svg"></div>
+            <div class="face-eye" data-box="191.78 31.78 23.53 54.21" data-svg="assets/svg/eye-right.svg"></div>
+            <div class="face-mouth" data-box="166.28 93.35 55.35 31.21" data-svg="assets/svg/mouth.svg"></div>
+            <div class="face-mouth-o" data-box="186.35 99.65 15.3 18.7"></div>
+          </div>
         </div>
 
-        <div class="controller controller--left" data-svg="assets/svg/controller-left.svg"></div>
-        <div class="controller controller--right" data-svg="assets/svg/controller-right.svg"></div>
+        <!-- Shown while no cartridge is inserted (js/cartridges.js) -->
+        <p class="console-bubble" aria-hidden="true">Pick a game! ▲</p>
 
-        <div class="tv">
-          <div class="tv-art" data-svg="assets/svg/tv.svg"></div>
+        <div class="tv-table" data-svg="assets/svg/tv-table.svg"></div>
+
+        <div class="controller controller--left" data-plug="182 14" aria-hidden="true" data-svg="assets/svg/controller-2.svg"></div>
+        <div class="controller controller--right" data-plug="182 14" aria-hidden="true" data-svg="assets/svg/controller-2.svg"></div>
+
+        <!-- data-box-*: areas in TV-frame.svg viewBox units (the export has no named groups) -->
+        <div class="tv" data-box-screen="108.1 72.1 1259.5 1024.5" data-box-power-led="1266.64 1138.85 51.42 51.42">
+          <div class="tv-art" data-svg="assets/svg/TV-frame.svg"></div>
+          <span class="tv-led" aria-hidden="true"></span>
           <div class="tv-screen" id="tv-screen" role="region" aria-label="TV screen" tabindex="-1">
             <div class="tv-inner">
               <p class="screen-osd" aria-hidden="true"></p>
@@ -72,6 +89,12 @@
             </div>
             <canvas class="tv-static" width="96" height="72" aria-hidden="true"></canvas>
           </div>
+          <!-- Bulged CRT glass, traced from the screen opening in TV-frame.svg (0–1 units) -->
+          <svg class="tv-clip" width="0" height="0" aria-hidden="true">
+            <clipPath id="crt-shape" clipPathUnits="objectBoundingBox">
+              <path d="M.9812 .9468 C.9797 .9643 .9669 .9795 .9527 .9808 C.6509 1.0065 .3491 1.0065 .0473 .9808 C.0331 .9795 .0202 .9643 .0188 .9468 C-.0063 .6490 -.0063 .3511 .0188 .0532 C.0202 .0357 .0331 .0205 .0473 .0193 C.3491 -.0064 .6509 -.0064 .9527 .0193 C.9669 .0205 .9797 .0357 .9812 .0532 C1.0063 .3511 1.0063 .6490 .9812 .9468Z"/>
+            </clipPath>
+          </svg>
         </div>
       </div>
     </section>
@@ -81,9 +104,25 @@
       <h2 id="desk-title" class="visually-hidden">Contact and music</h2>
       <div class="desk-stage">
 
-        <div class="device beeper" id="contact">
-          <p class="note note--beeper" aria-hidden="true">Page me!<small>I'll call you back</small></p>
-          <div class="beeper-art" data-svg="assets/svg/beeper.svg"></div>
+        <div class="device discman" id="music">
+          <!-- Assembled from separate exports; data-box = position in dm-bg.svg viewBox units (x y w h) -->
+          <div class="discman-art" data-svg="assets/svg/md-bg.svg"></div>
+          <!-- CD centred in the lid ring (360.16, 360.01); the cap's glass arc shares that centre -->
+          <div class="dm-cd" data-box="44.06 43.91 632.2 632.2" data-svg="assets/svg/dm-cd.svg"></div>
+          <div class="dm-cap" data-box="60.11 59.96 628.07 374.64" data-svg="assets/svg/dm-cap.svg"></div>
+          <div class="dm-screen" data-box="219.3 708 281.81 39.92" data-svg="assets/svg/dm-screen.svg"></div>
+          <div class="discman-display" data-box="219.3 708 281.81 39.92" aria-hidden="true">
+            <span class="dm-track"><span class="dm-track-text">NO DISC</span></span>
+            <span class="dm-time">00:00</span>
+          </div>
+          <button class="device-btn" type="button" data-btn="prev" data-box="37.9 603.1 35.24 35.24" aria-label="Previous track"><span data-svg="assets/svg/dm-btn-prev.svg"></span></button>
+          <button class="device-btn" type="button" data-btn="play" data-box="59.9 638.1 73.07 73.07" aria-label="Play" aria-pressed="false"><span data-svg="assets/svg/dm-btn-play.svg"></span></button>
+          <button class="device-btn" type="button" data-btn="next" data-box="137.6 692.9 35.24 35.24" aria-label="Next track"><span data-svg="assets/svg/dm-btn-next.svg"></span></button>
+          <button class="device-btn" type="button" data-btn="stop" data-box="580.9 633.2 73.07 73.07" aria-label="Stop"><span data-svg="assets/svg/dm-btn-stop.svg"></span></button>
+        </div>
+
+        <div class="device beeper" id="contact" data-box-screen="43.5 51.9 487.2 255.7">
+          <div class="beeper-art" data-svg="assets/svg/beeper-bg.svg"></div>
           <div class="beeper-screen">
             <form class="lcd" novalidate aria-label="Contact form">
               <div class="lcd-status" aria-hidden="true">
@@ -112,23 +151,11 @@
               <p class="lcd-hint" aria-hidden="true">▲▼ move · ● ok</p>
             </form>
           </div>
-          <button class="hotspot" type="button" data-btn="up" aria-label="Previous field"></button>
-          <button class="hotspot" type="button" data-btn="ok" aria-label="Confirm"></button>
-          <button class="hotspot" type="button" data-btn="down" aria-label="Next field"></button>
-          <button class="hotspot" type="button" data-btn="menu" aria-label="Clear field"></button>
-        </div>
-
-        <div class="device discman" id="music">
-          <p class="note note--discman" aria-hidden="true">Press play ♪</p>
-          <div class="discman-art" data-svg="assets/svg/discman.svg"></div>
-          <div class="discman-display" aria-hidden="true">
-            <span class="dm-track"><span class="dm-track-text">NO DISC</span></span>
-            <span class="dm-time">00:00</span>
-          </div>
-          <button class="hotspot" type="button" data-btn="prev" aria-label="Previous track"></button>
-          <button class="hotspot" type="button" data-btn="play" aria-label="Play" aria-pressed="false"></button>
-          <button class="hotspot" type="button" data-btn="next" aria-label="Next track"></button>
-          <button class="hotspot" type="button" data-btn="stop" aria-label="Stop"></button>
+          <!-- data-box: button position in beeper-bg.svg viewBox units (x y w h) -->
+          <button class="device-btn" type="button" data-btn="up" data-box="47 358 82.07 45.13" aria-label="Previous field"><span data-svg="assets/svg/bp-btn-up.svg"></span></button>
+          <button class="device-btn" type="button" data-btn="down" data-box="254.6 358 82.07 45.13" aria-label="Next field"><span data-svg="assets/svg/bp-btn-down.svg"></span></button>
+          <button class="device-btn" type="button" data-btn="ok" data-box="129.3 353.3 125.11 54.65" aria-label="Confirm"><span data-svg="assets/svg/bp-btn-ok.svg"></span></button>
+          <button class="device-btn" type="button" data-btn="clear" data-box="470 358 75.72 45.13" aria-label="Clear field"><span data-svg="assets/svg/bp-btn-clear.svg"></span></button>
         </div>
 
       </div>
@@ -160,19 +187,53 @@
         </div>
       </header>
       <dl class="stats">
-        <div><dt>Class</dt><dd>Design Engineer · Senior UX/UI</dd></div>
+        <div><dt>Class</dt><dd>Design Engineer · Front-End Artist · eCommerce Specialist</dd></div>
         <div><dt>Base</dt><dd>Bogotá, Colombia</dd></div>
+        <div><dt>Guild</dt><dd>Boton Promo SAS · since 2011</dd></div>
+        <div><dt>XP</dt><dd>20+ years</dd></div>
         <div><dt>Status</dt><dd class="status-online">Available for freelance</dd></div>
       </dl>
+      <p class="info-bio">20+ years turning pixels into working experiences, from battling IE6 quirks to building modern design systems.</p>
+
       <h3 class="screen-sub">Skills</h3>
       <ul class="bars" role="list">
-        <li style="--v: 95"><span>UX / UI</span><i></i></li>
-        <li style="--v: 99"><span>CSS</span><i></i></li>
-        <li style="--v: 95"><span>HTML</span><i></i></li>
-        <li style="--v: 85"><span>UI research</span><i></i></li>
-        <li style="--v: 80"><span>Illustration</span><i></i></li>
+        <li style="--v: 95"><span>UI / UX</span><i></i></li>
+        <li style="--v: 95"><span>Front-end</span><i></i></li>
+        <li style="--v: 90"><span>eCommerce</span><i></i></li>
+        <li style="--v: 75"><span>Cloud / DevOps</span><i></i></li>
+        <li style="--v: 70"><span>AI tools</span><i></i></li>
       </ul>
-      <p class="info-bio">Design engineer living between the design file and the browser: UI research, design systems and hand-crafted CSS.</p>
+
+      <h3 class="screen-sub">Inventory</h3>
+      <ul class="chips" role="list">
+        <li>Figma</li><li>Penpot</li><li>Illustrator</li><li>HTML5</li><li>CSS3</li><li>Sass</li>
+        <li>Tailwind</li><li>JavaScript</li><li>PrestaShop</li><li>Shopify</li><li>WooCommerce</li><li>AWS</li>
+      </ul>
+
+      <h3 class="screen-sub">Achievements unlocked</h3>
+      <ul class="achievements" role="list">
+        <li><strong>esferos.com</strong> redesigned from static to dynamic: 103K+ visits a month, +300% traffic</li>
+        <li><strong>1.3M+ emails</strong> designed and sent with Mailchimp and Brevo</li>
+        <li><strong>Zero downtime</strong> store migrations to AWS Lightsail</li>
+        <li><strong>Global sourcing</strong> in China (2014–2024), in English and Mandarin: costs −20%</li>
+      </ul>
+
+      <h3 class="screen-sub">Quest log</h3>
+      <ol class="quests" role="list">
+        <li><span>2011 – now</span><p><strong>UI/UX Designer, Front-End Dev &amp; DevOps</strong> · Boton Promo SAS</p></li>
+        <li><span>2014 – now</span><p><strong>Purchasing Manager (China)</strong> · Boton Promo SAS</p></li>
+        <li><span>2022 – 2024</span><p><strong>Shopify / PrestaShop Specialist</strong> · Bombatex &amp; Bombast</p></li>
+      </ol>
+
+      <h3 class="screen-sub">Training</h3>
+      <ol class="quests" role="list">
+        <li><span>2025</span><p><strong>Google UX Design</strong> · Coursera</p></li>
+        <li><span>2024</span><p><strong>Front-End Development</strong> · Fundación Carlos Slim</p></li>
+        <li><span>2022</span><p><strong>AWS Cloud Computing</strong> · AWS Educate</p></li>
+        <li><span>B.Sc.</span><p><strong>Technology Design</strong> · Universidad Pedagógica Nacional</p></li>
+      </ol>
+
+      <blockquote class="info-quote">“I bridge user delight with business success.”</blockquote>
     </article>
   </template>
 

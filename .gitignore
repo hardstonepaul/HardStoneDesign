@@ -1,0 +1,6 @@
+# Deployment packages
+*.zip
+
+# OS / editor clutter
+Thumbs.db
+.DS_Store

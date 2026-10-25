@@ -1,6 +1,6 @@
 // Discman music player. Put your tracks in assets/audio/ and list them here.
 // With no tracks it plays a small synthesized lo-fi demo loop.
-import { part, partBox, setBoxVars } from './svg.js';
+import { placeByBox } from './svg.js';
 import { audioContext, noise } from './sfx.js';
 
 const TRACKS = [
@@ -95,14 +95,13 @@ export function initDiscman(root) {
   let playing = false;
   let timer = 0;
 
-  setBoxVars(root, 'display', partBox(svg, 'display'));
-  for (const btn of root.querySelectorAll('.hotspot')) {
-    const box = partBox(svg, `btn-${btn.dataset.btn}`);
-    if (!box) { btn.hidden = true; continue; }
-    for (const k of ['x', 'y', 'w', 'h']) btn.style.setProperty(`--${k}`, `${box[k]}%`);
-    const svgPart = part(svg, `btn-${btn.dataset.btn}`);
-    btn.addEventListener('pointerdown', () => svgPart?.classList.add('is-pressed'));
-    for (const type of ['pointerup', 'pointerleave', 'blur']) btn.addEventListener(type, () => svgPart?.classList.remove('is-pressed'));
+  const buttons = [...root.querySelectorAll('.device-btn')];
+
+  // Assembled from separate exports: body, CD, lid, screen and one SVG per button
+  placeByBox(root, svg);
+  for (const btn of buttons) {
+    btn.addEventListener('pointerdown', () => btn.classList.add('is-pressed'));
+    for (const type of ['pointerup', 'pointerleave', 'blur']) btn.addEventListener(type, () => btn.classList.remove('is-pressed'));
   }
 
   const elapsed = () => (demo ? demo.time : audio.currentTime);
@@ -151,11 +150,11 @@ export function initDiscman(root) {
     next: () => skip(1),
     prev: () => skip(-1),
   };
-  for (const btn of root.querySelectorAll('.hotspot')) btn.addEventListener('click', () => actions[btn.dataset.btn]());
+  for (const btn of buttons) btn.addEventListener('click', () => actions[btn.dataset.btn]());
   audio.addEventListener('ended', () => skip(1));
 
-  // Clicking the disc itself also plays/pauses
-  part(svg, 'disc')?.addEventListener('click', actions.play);
+  // Clicking the CD or lid also plays/pauses (keyboard users have the play button)
+  for (const el of root.querySelectorAll('.dm-cd, .dm-cap')) el.addEventListener('click', actions.play);
 
   if ('mediaSession' in navigator) {
     navigator.mediaSession.setActionHandler('play', play);

@@ -19,24 +19,30 @@
     content: "";
     position: absolute;
     inset: 0 0 auto;
-    block-size: 18%;
+    block-size: 7%;
     background: linear-gradient(var(--plum-900), transparent);
     pointer-events: none;
   }
 }
 
+/* Discman and beeper side by side in the empty middle of the desk (as in the mockup) */
 .desk-stage {
   position: relative;
-  inline-size: min(100% - 2rem, 1100px);
+  inline-size: min(100% - 2rem, max(54vw, 640px), 100svh);
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 0.92fr 1fr;
   align-items: center;
-  gap: clamp(2.5rem, 7vw, 7rem);
+  gap: 8%;
+  translate: 0 -4svh;
 }
 
 @container desk (width < 760px) {
-  .desk-stage { grid-template-columns: 1fr; justify-items: center; }
-  .desk-stage .device { justify-self: center; }
+  .desk-stage {
+    inline-size: min(100% - 2rem, 420px);
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    translate: none;
+  }
 }
 
 .device {
@@ -44,59 +50,32 @@
   inline-size: 100%;
   container-type: inline-size;
   filter: drop-shadow(0 2.5cqi 2.5cqi rgb(0 0 0 / 0.45));
-  transition: rotate 0.5s var(--ease-back);
+  transition: translate 0.3s var(--ease-out);
 
-  & .hotspot {
+  /* Parts from separate exports, placed over the body by js/svg.js placeByBox() */
+  & [data-box] {
     position: absolute;
     left: var(--x);
     top: var(--y);
     inline-size: var(--w);
-    block-size: var(--h);
-    border-radius: 999px;
-    -webkit-tap-highlight-color: transparent;
   }
-
-  & svg [data-part] { transition: translate 0.08s, filter 0.08s; }
-  & svg [data-part].is-pressed { translate: 0 2px; filter: brightness(0.82); }
 }
 
-.beeper { max-inline-size: 560px; justify-self: end; rotate: -4deg; }
-.discman { max-inline-size: 380px; justify-self: start; rotate: 6deg; }
+/* Device buttons: each one is its own SVG export */
+.device-btn {
+  border-radius: 999px;
+  transition: translate 0.08s, filter 0.08s;
+  -webkit-tap-highlight-color: transparent;
 
-.beeper:is(:hover, :focus-within) { rotate: -1.5deg; }
-.discman:hover { rotate: 3deg; }
+  &:hover { filter: brightness(1.08); }
+  &.is-pressed { translate: 0 2px; filter: brightness(0.82); }
+}
 
 .beeper.is-buzzing { animation: buzz 0.07s linear 8; }
 
 @keyframes buzz {
   25% { translate: 0.8% 0; }
   75% { translate: -0.8% 0; }
-}
-
-/* Sticky notes */
-.note {
-  position: absolute;
-  z-index: 2;
-  padding: 0.7em 1em 0.8em;
-  background: color-mix(in oklch, var(--cart-yellow) 55%, var(--gray-50));
-  color: var(--plum-900);
-  font: 600 clamp(0.85rem, 4cqi, 1.25rem)/1.1 var(--font-ui);
-  box-shadow: 0 0.6em 1em rgb(0 0 0 / 0.3);
-  pointer-events: none;
-
-  & small {
-    display: block;
-    margin-block-start: 0.3em;
-    font-size: 0.7em;
-    font-weight: 400;
-  }
-}
-
-.note--beeper { inset: -10% auto auto 3%; rotate: -7deg; }
-.note--discman {
-  inset: -8% 4% auto auto;
-  rotate: 8deg;
-  background: color-mix(in oklch, var(--lavender) 60%, var(--gray-50));
 }
 
 /* ───── Beeper LCD form ───── */
@@ -128,7 +107,7 @@
 .lcd-status {
   display: flex;
   justify-content: space-between;
-  font: 400 3cqi/1 var(--font-pixel);
+  font: 400 max(9px, 3cqi)/1 var(--font-pixel);
 }
 
 .lcd-batt {
@@ -208,7 +187,7 @@
 }
 
 .lcd-hint {
-  font: 400 2.5cqi/1 var(--font-pixel);
+  font: 400 max(9px, 2.5cqi)/1 var(--font-pixel);
   text-transform: uppercase;
   opacity: 0.7;
 }
@@ -227,20 +206,18 @@
 }
 
 /* ───── Discman ───── */
-.discman-display {
-  position: absolute;
-  left: var(--display-x);
-  top: var(--display-y);
-  inline-size: var(--display-w);
-  block-size: var(--display-h);
+.device .discman-display {
+  block-size: var(--h);
   display: flex;
   align-items: center;
   gap: 2cqi;
-  padding-inline: 2cqi;
+  padding-inline: 3cqi;
   overflow: hidden;
-  font: 400 5cqi/1 var(--font-crt);
-  color: #22302a;
+  border-radius: 29% / 29%;
+  font: 400 5.6cqi/1 var(--font-crt);
+  color: #3b3b3b;
   pointer-events: none;
+  transition: background-color 0.4s, color 0.4s;
 }
 
 .dm-track {
@@ -253,7 +230,11 @@
 
 .discman.is-playing {
   & .dm-track-text { animation: marquee 7s linear infinite; }
-  & .discman-display { text-shadow: 0 0 4px rgb(255 255 255 / 0.5); }
+  /* Backlight on while playing */
+  & .discman-display {
+    background-color: oklch(from var(--lcd-green) l c h / 0.45);
+    color: var(--lcd-ink);
+  }
 }
 
 @keyframes marquee {
@@ -261,15 +242,10 @@
   to { translate: -100% 0; }
 }
 
-.discman svg [data-part="disc"] {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: spin 1.4s linear infinite paused;
-}
-
-.discman.is-playing svg [data-part="disc"] { animation-play-state: running; }
-.discman svg [data-part="disc"] { cursor: pointer; }
-.discman svg [data-part="window"] { pointer-events: none; }
+/* The CD sits under the lid and shows through its window */
+.dm-cd { animation: spin 1.4s linear infinite paused; }
+.discman.is-playing .dm-cd { animation-play-state: running; }
+.dm-cd, .dm-cap { cursor: pointer; }
 
 @keyframes spin {
   to { rotate: 1turn; }

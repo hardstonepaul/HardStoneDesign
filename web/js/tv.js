@@ -1,5 +1,5 @@
 // CRT TV: power off/on effect, static noise, and the screens for each cartridge.
-import { partBox, setBoxVars } from './svg.js';
+import { markerBox, setBoxVars } from './svg.js';
 import { fillSprites } from './pixel.js';
 import { sfx } from './sfx.js';
 import { WORKS } from './works-data.js';
@@ -23,7 +23,9 @@ export function createTV(tvEl) {
   const status = document.getElementById('sr-status');
   let offAnimation = null;
 
-  setBoxVars(tvEl, 'screen', partBox(tvEl.querySelector('.tv-art svg'), 'screen'));
+  const art = tvEl.querySelector('.tv-art svg');
+  setBoxVars(tvEl, 'screen', markerBox(art, 'screen', tvEl));
+  setBoxVars(tvEl, 'led', markerBox(art, 'power-led', tvEl));
 
   // ───── Screens ─────
   const screens = {
@@ -36,8 +38,8 @@ export function createTV(tvEl) {
   function linksScreen() {
     const frag = document.getElementById('tpl-links').content.cloneNode(true);
     const list = frag.querySelector('.link-list');
-    for (const { label, url } of CONFIG.links.filter((l) => l.url)) {
-      list.append(html`<li><a href="${url}" target="_blank" rel="noopener">${label}<small>${new URL(url).hostname.replace('www.', '')}</small></a></li>`);
+    for (const { label, url, note } of CONFIG.links.filter((l) => l.url)) {
+      list.append(html`<li><a href="${url}" target="${url.startsWith('http') ? '_blank' : '_self'}" rel="noopener">${label}<small>${note ?? new URL(url).hostname.replace('www.', '')}</small></a></li>`);
     }
     list.append(html`<li><a href="#contact" data-contact>Page me<small>contact form</small></a></li>`);
     list.querySelector('[data-contact]').addEventListener('click', (e) => {

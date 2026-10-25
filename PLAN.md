@@ -80,6 +80,11 @@ One device per file, artboard trimmed tight to the object (**Object → Artboard
 | `beeper.svg` | `body`, `bezel`, `screen`, `btn-up`, `btn-ok`, `btn-down`, `btn-menu` |
 | `discman.svg` | `body`, `lid`, `disc`, `buttons`, `display` (not designed yet?) |
 
+**Exports without named groups** (current `TV-frame.svg`, `beeper-bg.svg` + `bp-btn-*.svg`):
+areas are set in `index.html` with `data-box-screen="x y w h"` / `data-box="x y w h"` in the
+SVG's own viewBox units (read them from Illustrator's Transform panel with the artboard at 0,0).
+A named group in the export (e.g. `screen`) always wins over the attribute.
+
 If a mouth has more than one expression (smile / "o" / happy), export them as sibling groups
 `mouth-smile`, `mouth-o`, `mouth-happy` — I'll toggle them.
 
@@ -239,20 +244,22 @@ Everything degrades gracefully (feature queries `@supports`).
 
 ## 9. Background prompts
 
-Generate both at **2560 × 1440 (16:9)**, then export AVIF/WebP. Keep them **soft and low-saturation**
-so the vector devices stand out. The devices are NOT in the image — the prompts leave empty space for them.
+Both images are mood only: the devices and the TV table are SVGs layered on top, so the
+images can crop freely (`background-size: cover`). Generate at **2560 × 1440 (16:9)**,
+export WebP ≤ 300 KB.
 
-### §1 — 90s gaming room
+### §1 — 90s gaming room (v2: no furniture in the centre)
 
-> Flat vector illustration of a cozy 1990s teenager's gaming bedroom in the evening, front view at eye level, symmetrical composition. In the center, a low wooden TV stand with an empty top, and a large plain empty wall area above it, reserved for a TV and game console added later. Around the edges only: posters of fictional retro video games (no readable text), a wall shelf with game boxes and cassette tapes, a glowing lava lamp, a potted plant, a beanbag chair on a patterned carpet, a window with half-closed blinds letting in warm orange sunset light, string of small lights. Clean flat shapes with soft gradients and subtle paper grain, muted desaturated palette of warm greys, dusty lavender, soft purple and muted red, deep plum shadows (#211A21). Gentle vignette, slightly darker edges, calm nostalgic mood. No TV, no game console, no people, no text, no logos. 16:9, 2560x1440.
+> Flat 2D illustration with soft painterly gradients and subtle grain, a cozy 1990s teenager's gaming bedroom at dusk, straight-on front view at eye level, symmetrical composition. The center third of the image is a plain, empty, softly lit wall with a baseboard and an empty patch of carpet in front of it — no furniture, no TV stand, no cabinet, nothing in the center. Decoration only on the left and right edges: a window with half-closed blinds and a warm orange sunset, warm string lights along the top edge, framed posters of fictional retro sci-fi and fantasy video games with no readable text, a glowing lava lamp on a small nightstand, the corner of a bed with a plaid blanket on the far left, a wooden bookshelf with game boxes and cassette tapes and a hanging pothos plant on the right, a purple beanbag in the lower right corner, a patterned rug in the foreground. Muted desaturated palette of dusty purple, warm grey, muted red and soft lavender with warm lamp-orange accents and deep plum shadows (#211A21). Gentle vignette, calm nostalgic mood. No TV, no table, no game console, no people, no text, no logos, no watermark. 16:9, 2560x1440.
 
-### §2 — Desk for beeper and discman
+Negative prompt: `tv stand, table, desk, cabinet, dresser, furniture in center, television, monitor, game console, text, letters, watermark, people`
 
-> Flat vector illustration, top-down bird's-eye view of a 1990s wooden desk surface, muted and calm. Objects only around the borders: a spiral notebook with doodles, pencils and an eraser, a cassette tape, a stack of CD jewel cases, foam headphones with a coiled cable, sticky notes, a few retro stickers, a mug of coffee, a small keychain virtual pet. Two large clear empty areas on the desk: one at left-center (for a pager) and one at right-center (for a portable CD player). Soft warm lamp light from top-left with gentle long shadows, subtle wood grain, slightly desaturated palette of warm greys, dusty lavender, soft purple and muted red, deep plum shadows (#211A21). Clean flat shapes with soft gradients and light paper grain. No pager, no CD player, no hands, no people, no text, no logos. 16:9, 2560x1440.
+Shortcut: keep `90s-room-2.jpg` and erase the TV stand with generative fill (select the stand and
+the floor under it, prompt: "plain wall with baseboard and carpet").
 
-Tips: if the generator adds a TV/pager anyway, add "empty space" to a negative prompt
-(`tv, television, monitor, pager, cd player, text, watermark, people`). A darker top edge on the
-desk image lets §1 blend into §2 with a gradient.
+### §2 — Desk (done: `desktop-bg.jpg`)
+
+> Flat 2D illustration with soft painterly gradients and subtle grain, top-down bird's-eye view of a warm wooden desk at night, lit by a desk lamp in the top-left corner with soft long shadows. Objects only along the edges: top-left the desk lamp and a pothos plant, a stack of lavender sticky notes, a cassette tape, a stack of CD cases with purple landscape covers, over-ear headphones with a coiled cable on the top right; on the left a spiral notebook with doodles (planet, stars, heart, smiley, sun), two pencils and a pink eraser, a few photos, a flower sticker and washi tape in the bottom-left; on the right a small landscape photo card, a star sticker and a purple virtual-pet keychain; bottom-right a mug of black coffee on a cork coaster and some leaves. The whole center of the desk is empty wood, wide enough for two devices side by side. Muted cozy palette of warm browns, dusty lavender and muted pink with deep plum shadows (#211A21). No CD player, no pager, no phone, no hands, no text, no logos, no watermark. 16:9, 2560x1440.
 
 ---
 

@@ -73,8 +73,8 @@
 
   /* Backgrounds: set to image-set(url("../assets/img/room.avif") type("image/avif"), url("../assets/img/room.webp") type("image/webp"))
      once the generated images exist */
-  --room-bg: none;
-  --desk-bg: none;
+  --room-bg: url("../assets/img/90s-room-2.jpg");
+  --desk-bg: url("../assets/img/desktop-bg.jpg");
 
   /* Type */
   --font-ui: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;

@@ -1,9 +1,12 @@
 // The console's face: eyes follow the pointer (or a target element), blink, change mood.
-import { part } from './svg.js';
+// Eyes and mouth are separate exports (eye-left/right.svg, mouth.svg) placed over
+// console.svg by their data-box; CSS reads --look-x / --look-y from the face layer.
+import { placeByBox } from './svg.js';
 
 export function createFace(consoleEl) {
-  const svg = consoleEl.querySelector('.console-art svg');
-  const eyes = [part(svg, 'eye-left'), part(svg, 'eye-right')].filter(Boolean);
+  const svg = consoleEl.querySelector('.console-face');
+  placeByBox(svg, consoleEl.querySelector('.console-art svg'));
+  const eyes = [...svg.querySelectorAll('.face-eye')];
   let pointer = null;
   let target = null;
   let raf = 0;
