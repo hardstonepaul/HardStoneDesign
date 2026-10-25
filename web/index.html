@@ -147,6 +147,8 @@
                 <p class="lcd-summary"></p>
                 <button class="lcd-send" type="submit">● Send</button>
               </fieldset>
+              <!-- Spam trap: hidden from people, bots fill it in -->
+              <input class="visually-hidden" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
               <p class="lcd-msg" role="status" aria-live="polite"></p>
               <p class="lcd-hint" aria-hidden="true">▲▼ move · ● ok</p>
             </form>

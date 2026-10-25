@@ -20,7 +20,7 @@ It's a **90s gaming room** built with plain HTML, CSS and JavaScript: no framewo
 - Deep links work: `#info`, `#works`, `#links`. Back and forward too.
 
 **The desk**
-- **Beeper:** the contact form, one field per page on the green LCD, driven by the beeper's own buttons. It sends through `mailto:`.
+- **Beeper:** the contact form, one field per page on the green LCD, driven by the beeper's own buttons. It posts to `contact.php` (PHP `mail()`, with a spam trap and a rate limit). Without PHP, it falls back to `mailto:`.
 - **Discman:** a music player. The CD spins under the clear lid and the LCD lights up. With no tracks configured, it plays a synthesized lo-fi demo loop.
 
 **Sound:** all effects are synthesized with the Web Audio API (no audio files). They're on by default, with a toggle.
@@ -51,12 +51,15 @@ Upload the **contents of `web/`** to any static host (Apache, Nginx, Netlify, โ€
 
 `web/.htaccess` adds compression and caching on Apache. It's a hidden file, so make sure your FTP client or File Manager uploads it.
 
+The contact form needs PHP with `mail()` enabled. The recipient and sender addresses are constants at the top of `web/contact.php`.
+
 ## Project structure
 
 ```
 web/
   index.html          page + TV screen templates (edit texts here)
   .htaccess           Apache compression + caching
+  contact.php         contact form endpoint (PHP mail)
   css/
     main.css          @layer order + imports
     tokens.css        palette, fonts, backgrounds
@@ -91,7 +94,7 @@ design elements.ai    source artwork (Adobe Illustrator)
 |---|---|
 | My info / Links texts | `<template>`s at the bottom of `web/index.html` |
 | Projects (add more objects to extend the grid) | `web/js/works-data.js` |
-| Contact email, social links | `web/js/config.js` |
+| Contact email, social links | `web/contact.php` (recipient) and `web/js/config.js` (links, mailto fallback) |
 | Music tracks | `TRACKS` in `web/js/discman.js` (files in `web/assets/audio/`) |
 | Colours, fonts, backgrounds | `web/css/tokens.css` |
 | Artwork | `web/assets/svg/`: same file names; positions use `data-box` attributes in `index.html` (see `PLAN.md` ยง2) |
@@ -104,4 +107,5 @@ design elements.ai    source artwork (Adobe Illustrator)
 
 ## License
 
-[CC0 1.0 Universal](LICENSE).
+- **Code** (HTML, CSS, JavaScript, PHP, tooling): [MIT](LICENSE). Keep the copyright notice.
+- **Artwork and content** (SVGs, images, `.ai` file, texts): [CC BY 4.0](LICENSE-ASSETS.md). Reuse freely with credit to **Paul Suarez (HardStone)**.

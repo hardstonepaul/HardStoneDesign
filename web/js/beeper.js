@@ -1,15 +1,29 @@
 // Beeper = contact form. One field per "page"; the beeper's own buttons navigate.
-// Sending opens the visitor's mail app (mailto:). To switch to a form service later,
-// replace sendMessage() only.
+// Sending posts to contact.php (PHP mail() on the server). Where PHP isn't available
+// (the local dev server), it falls back to opening the visitor's mail app.
 import { markerBox, placeByBox, setBoxVars } from './svg.js';
 import { sfx } from './sfx.js';
 import { CONFIG } from './config.js';
 
-function sendMessage({ name, email, message }) {
+const ENDPOINT = 'contact.php';
+const ERRORS = { invalid: 'ERR: CHECK FIELDS', rate: 'ERR: TRY LATER', origin: 'ERR: BLOCKED' };
+
+function openMailApp({ name, email, message }) {
   const subject = `Portfolio contact from ${name}`;
   const body = `${message}\n\n— ${name} (${email})`;
   location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  return Promise.resolve();
+}
+
+// Resolves to { ok: true } or { ok: false, error: 'LCD message' }
+async function sendMessage(formData) {
+  try {
+    const res = await fetch(ENDPOINT, { method: 'POST', body: formData, headers: { Accept: 'application/json' } });
+    const json = await res.json(); // throws when there is no PHP (404 page / raw file)
+    if (json.ok) return { ok: true };
+    if (ERRORS[json.error]) return { ok: false, error: ERRORS[json.error] };
+  } catch { /* no endpoint: fall through */ }
+  openMailApp(Object.fromEntries(formData));
+  return { ok: true };
 }
 
 export function initBeeper(root) {
@@ -92,11 +106,17 @@ export function initBeeper(root) {
     }
     msg.textContent = 'SENDING…';
     sfx.beep();
-    await sendMessage(Object.fromEntries(new FormData(form)));
+    const result = await sendMessage(new FormData(form));
+    if (!result.ok) {
+      msg.textContent = result.error;
+      sfx.error();
+      root.classList.add('is-buzzing');
+      return;
+    }
     root.classList.add('is-sent', 'is-buzzing');
     msg.textContent = 'MSG SENT ✓';
     sfx.buzz();
-    navigator.vibrate?.([120, 60, 120]);
+    if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.([120, 60, 120]);
     setTimeout(() => root.classList.remove('is-buzzing'), 700);
     setTimeout(() => {
       root.classList.remove('is-sent');
