@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 380">
+  <!-- PLACEHOLDER: replace with your Illustrator export (keep the group ids) -->
+  <rect id="body" x="4" y="4" width="504" height="372" rx="44" fill="#384240"/>
+  <rect id="bezel" x="34" y="38" width="444" height="254" rx="30" fill="#1d2120"/>
+  <rect id="screen" x="58" y="64" width="396" height="202" rx="16" fill="#5fa63f"/>
+  <g id="btn-up">
+    <rect x="52" y="306" width="78" height="40" rx="20" fill="#5b6467"/>
+    <path d="M80 334l9-14 9 14z" fill="#384240"/>
+  </g>
+  <g id="btn-down">
+    <rect x="222" y="306" width="78" height="40" rx="20" fill="#5b6467"/>
+    <path d="M256 320h18l-9 14z" fill="#384240"/>
+  </g>
+  <g id="btn-ok">
+    <rect x="124" y="300" width="108" height="52" rx="26" fill="#5b6467" stroke="#384240" stroke-width="5"/>
+    <circle cx="178" cy="326" r="9" fill="#384240"/>
+  </g>
+  <g id="btn-menu">
+    <rect x="400" y="306" width="62" height="40" rx="14" fill="#5b6467"/>
+    <rect x="420" y="323" width="22" height="6" rx="2" fill="#384240"/>
+  </g>
+</svg>

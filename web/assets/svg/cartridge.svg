@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 100">
+  <!-- PLACEHOLDER: replace with your Illustrator export (keep the group ids) -->
+  <g id="shell">
+    <path d="M18 80h116v10a6 6 0 0 1-6 6H24a6 6 0 0 1-6-6z" fill="#e8b600"/>
+    <rect x="3" y="4" width="146" height="80" rx="7" fill="#ffd200" stroke="#e8b600" stroke-width="3"/>
+  </g>
+  <g id="label">
+    <rect x="17" y="14" width="118" height="58" rx="3" fill="#73cff5" stroke="#e8b600" stroke-width="2"/>
+  </g>
+  <g id="shine" fill="#fff">
+    <path d="M70 15h22L64 71H42z" opacity=".3"/>
+    <path d="M98 15h8L78 71h-8z" opacity=".3"/>
+  </g>
+</svg>

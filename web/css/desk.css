@@ -1,0 +1,291 @@
+/* §2 · Desk: beeper (contact form) + discman (music player) */
+
+.desk {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: clamp(5rem, 12vh, 9rem) 0 clamp(3rem, 8vh, 6rem);
+  overflow: clip;
+  container: desk / inline-size;
+  background:
+    var(--desk-bg) center / cover no-repeat,
+    repeating-linear-gradient(7deg, rgb(0 0 0 / 0.05) 0 2px, transparent 2px 11px),
+    repeating-linear-gradient(-2deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 29px),
+    linear-gradient(var(--wood), var(--wood-dark));
+
+  /* Blend from the room into the desk */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    block-size: 18%;
+    background: linear-gradient(var(--plum-900), transparent);
+    pointer-events: none;
+  }
+}
+
+.desk-stage {
+  position: relative;
+  inline-size: min(100% - 2rem, 1100px);
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: clamp(2.5rem, 7vw, 7rem);
+}
+
+@container desk (width < 760px) {
+  .desk-stage { grid-template-columns: 1fr; justify-items: center; }
+  .desk-stage .device { justify-self: center; }
+}
+
+.device {
+  position: relative;
+  inline-size: 100%;
+  container-type: inline-size;
+  filter: drop-shadow(0 2.5cqi 2.5cqi rgb(0 0 0 / 0.45));
+  transition: rotate 0.5s var(--ease-back);
+
+  & .hotspot {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    inline-size: var(--w);
+    block-size: var(--h);
+    border-radius: 999px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  & svg [data-part] { transition: translate 0.08s, filter 0.08s; }
+  & svg [data-part].is-pressed { translate: 0 2px; filter: brightness(0.82); }
+}
+
+.beeper { max-inline-size: 560px; justify-self: end; rotate: -4deg; }
+.discman { max-inline-size: 380px; justify-self: start; rotate: 6deg; }
+
+.beeper:is(:hover, :focus-within) { rotate: -1.5deg; }
+.discman:hover { rotate: 3deg; }
+
+.beeper.is-buzzing { animation: buzz 0.07s linear 8; }
+
+@keyframes buzz {
+  25% { translate: 0.8% 0; }
+  75% { translate: -0.8% 0; }
+}
+
+/* Sticky notes */
+.note {
+  position: absolute;
+  z-index: 2;
+  padding: 0.7em 1em 0.8em;
+  background: color-mix(in oklch, var(--cart-yellow) 55%, var(--gray-50));
+  color: var(--plum-900);
+  font: 600 clamp(0.85rem, 4cqi, 1.25rem)/1.1 var(--font-ui);
+  box-shadow: 0 0.6em 1em rgb(0 0 0 / 0.3);
+  pointer-events: none;
+
+  & small {
+    display: block;
+    margin-block-start: 0.3em;
+    font-size: 0.7em;
+    font-weight: 400;
+  }
+}
+
+.note--beeper { inset: -10% auto auto 3%; rotate: -7deg; }
+.note--discman {
+  inset: -8% 4% auto auto;
+  rotate: 8deg;
+  background: color-mix(in oklch, var(--lavender) 60%, var(--gray-50));
+}
+
+/* ───── Beeper LCD form ───── */
+.beeper-screen {
+  position: absolute;
+  left: var(--screen-x);
+  top: var(--screen-y);
+  inline-size: var(--screen-w);
+  block-size: var(--screen-h);
+}
+
+.lcd {
+  block-size: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 1.2cqi;
+  padding: 2.6cqi 4cqi 2.2cqi;
+  border-radius: 3.2cqi;
+  color: var(--lcd-ink);
+  font: 400 5.2cqi/1 var(--font-crt);
+  background:
+    radial-gradient(circle at 1px 1px, rgb(0 0 0 / 0.07) 1px, transparent 1.4px) 0 0 / 3px 3px,
+    var(--lcd-green);
+  box-shadow: inset 0 0.8cqi 2.4cqi rgb(0 0 0 / 0.35);
+
+  & ::selection { background: var(--lcd-ink); color: var(--lcd-green); }
+}
+
+.lcd-status {
+  display: flex;
+  justify-content: space-between;
+  font: 400 3cqi/1 var(--font-pixel);
+}
+
+.lcd-batt {
+  inline-size: 6cqi;
+  block-size: 2.6cqi;
+  border: 0.45cqi solid currentColor;
+  background: linear-gradient(90deg, currentColor 70%, transparent 0) 0 0 / 100% 100% no-repeat;
+  background-clip: content-box;
+  padding: 0.35cqi;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 25% -1.2cqi 25% auto;
+    inline-size: 0.7cqi;
+    background: currentColor;
+  }
+}
+
+.lcd-page-step {
+  display: grid;
+  align-content: start;
+  gap: 1.2cqi;
+  min-block-size: 0;
+
+  & label,
+  & .lcd-label {
+    font: 400 3.3cqi/1 var(--font-pixel);
+    text-transform: uppercase;
+  }
+
+  &:has(:user-invalid) label::after { content: " ✕"; }
+
+  & input,
+  & textarea {
+    inline-size: 100%;
+    padding: 0.3cqi 0.8cqi;
+    border: 0;
+    border-block-end: 0.5cqi dashed currentColor;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: 1;
+    caret-color: var(--lcd-ink);
+    caret-shape: block;
+    resize: none;
+
+    &:focus { outline: none; background: rgb(0 0 0 / 0.07); }
+  }
+
+  & textarea { field-sizing: fixed; block-size: 3.2lh; }
+}
+
+.lcd-summary {
+  font-size: 4.4cqi;
+  line-height: 1.05;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.lcd-send {
+  justify-self: start;
+  padding: 0.6cqi 2cqi;
+  border: 0.5cqi solid currentColor;
+  font: 400 3.4cqi/1 var(--font-pixel);
+  text-transform: uppercase;
+
+  &:hover, &:focus-visible { background: var(--lcd-ink); color: var(--lcd-green); outline: none; }
+}
+
+.lcd-msg {
+  min-block-size: 1em;
+  font-size: 4cqi;
+}
+
+.lcd-hint {
+  font: 400 2.5cqi/1 var(--font-pixel);
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* Sent screen */
+.beeper.is-sent {
+  & .lcd-page-step, & .lcd-hint { display: none; }
+  & .lcd-msg {
+    grid-row: 2;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    font: 400 6cqi/1.1 var(--font-pixel);
+    animation: blink 0.5s steps(1) 4;
+  }
+}
+
+/* ───── Discman ───── */
+.discman-display {
+  position: absolute;
+  left: var(--display-x);
+  top: var(--display-y);
+  inline-size: var(--display-w);
+  block-size: var(--display-h);
+  display: flex;
+  align-items: center;
+  gap: 2cqi;
+  padding-inline: 2cqi;
+  overflow: hidden;
+  font: 400 5cqi/1 var(--font-crt);
+  color: #22302a;
+  pointer-events: none;
+}
+
+.dm-track {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.dm-track-text { display: inline-block; }
+
+.discman.is-playing {
+  & .dm-track-text { animation: marquee 7s linear infinite; }
+  & .discman-display { text-shadow: 0 0 4px rgb(255 255 255 / 0.5); }
+}
+
+@keyframes marquee {
+  from { translate: 100% 0; }
+  to { translate: -100% 0; }
+}
+
+.discman svg [data-part="disc"] {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spin 1.4s linear infinite paused;
+}
+
+.discman.is-playing svg [data-part="disc"] { animation-play-state: running; }
+.discman svg [data-part="disc"] { cursor: pointer; }
+.discman svg [data-part="window"] { pointer-events: none; }
+
+@keyframes spin {
+  to { rotate: 1turn; }
+}
+
+/* ───── Scroll-driven entrance ───── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .device {
+      animation: desk-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+
+@keyframes desk-in {
+  from { opacity: 0; translate: 0 14vh; scale: 0.9; }
+}

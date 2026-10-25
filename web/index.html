@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HardStone · Paul Suarez, Design Engineer</title>
+  <meta name="description" content="Portfolio of Paul Suarez (HardStone): Design Engineer, Senior UX/UI designer and CSS lover from Bogotá, Colombia.">
+  <meta name="theme-color" content="#211a21">
+  <meta property="og:title" content="HardStone · Paul Suarez">
+  <meta property="og:description" content="Design Engineer, Senior UX/UI designer and CSS lover. Insert a cartridge.">
+  <link rel="icon" href="assets/svg/cartridge.svg" type="image/svg+xml">
+
+  <!-- TODO: self-host these as woff2 in assets/fonts before launch -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300..700&family=VT323&display=swap">
+
+  <link rel="stylesheet" href="css/main.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#tv-screen">Skip to the TV screen</a>
+
+  <button class="sound-toggle" type="button" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+    <span class="sound-toggle-label">SFX OFF</span>
+  </button>
+
+  <p class="visually-hidden" id="sr-status" role="status" aria-live="polite"></p>
+
+  <main>
+    <!-- §1 · Gaming room: cartridges (menu) → console → TV -->
+    <section class="room" id="room" aria-label="Gaming room">
+      <div class="room-stage">
+        <h1 class="logo">HardStone <span class="visually-hidden">· Paul Suarez, Design Engineer</span></h1>
+
+        <nav class="cart-shelf" aria-label="Main menu">
+          <button class="cart" type="button" data-cart="info" aria-pressed="false" aria-controls="tv-screen" style="--x: 21.5%; --y: 12%">
+            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">My info</span></span>
+          </button>
+          <button class="cart" type="button" data-cart="works" aria-pressed="false" aria-controls="tv-screen" style="--x: 41.6%; --y: 13.6%">
+            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">Works</span></span>
+          </button>
+          <button class="cart" type="button" data-cart="links" aria-pressed="false" aria-controls="tv-screen" style="--x: 61.4%; --y: 11.9%">
+            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">Links</span></span>
+          </button>
+        </nav>
+
+        <svg class="cables" viewBox="0 0 521 649" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M226 206 C228 248 196 252 186 230 C176 206 140 198 133 226"/>
+          <path d="M288 204 C290 246 318 250 330 228 C342 204 372 196 376 214"/>
+        </svg>
+
+        <div class="console" data-mood="smile">
+          <div class="console-slot">
+            <button class="slot-cart" type="button" hidden aria-label="Eject cartridge" title="Eject">
+              <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label"></span></span>
+            </button>
+          </div>
+          <div class="console-art" data-svg="assets/svg/console.svg"></div>
+        </div>
+
+        <div class="controller controller--left" data-svg="assets/svg/controller-left.svg"></div>
+        <div class="controller controller--right" data-svg="assets/svg/controller-right.svg"></div>
+
+        <div class="tv">
+          <div class="tv-art" data-svg="assets/svg/tv.svg"></div>
+          <div class="tv-screen" id="tv-screen" role="region" aria-label="TV screen" tabindex="-1">
+            <div class="tv-inner">
+              <p class="screen-osd" aria-hidden="true"></p>
+              <div class="screen-body"></div>
+            </div>
+            <canvas class="tv-static" width="96" height="72" aria-hidden="true"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §2 · Desk: beeper (contact form) + discman (music) -->
+    <section class="desk" id="desk" aria-labelledby="desk-title">
+      <h2 id="desk-title" class="visually-hidden">Contact and music</h2>
+      <div class="desk-stage">
+
+        <div class="device beeper" id="contact">
+          <p class="note note--beeper" aria-hidden="true">Page me!<small>I'll call you back</small></p>
+          <div class="beeper-art" data-svg="assets/svg/beeper.svg"></div>
+          <div class="beeper-screen">
+            <form class="lcd" novalidate aria-label="Contact form">
+              <div class="lcd-status" aria-hidden="true">
+                <span class="lcd-clock">--:--</span>
+                <span class="lcd-page">1/4</span>
+                <span class="lcd-batt"></span>
+              </div>
+              <fieldset class="lcd-page-step" data-step="name">
+                <label for="f-name">Your name</label>
+                <input id="f-name" name="name" autocomplete="name" required maxlength="60" spellcheck="false">
+              </fieldset>
+              <fieldset class="lcd-page-step" data-step="email" hidden>
+                <label for="f-email">Your email</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="120" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" spellcheck="false">
+              </fieldset>
+              <fieldset class="lcd-page-step" data-step="message" hidden>
+                <label for="f-message">Message</label>
+                <textarea id="f-message" name="message" rows="3" required maxlength="1000"></textarea>
+              </fieldset>
+              <fieldset class="lcd-page-step" data-step="send" hidden>
+                <p class="lcd-label">Send page?</p>
+                <p class="lcd-summary"></p>
+                <button class="lcd-send" type="submit">● Send</button>
+              </fieldset>
+              <p class="lcd-msg" role="status" aria-live="polite"></p>
+              <p class="lcd-hint" aria-hidden="true">▲▼ move · ● ok</p>
+            </form>
+          </div>
+          <button class="hotspot" type="button" data-btn="up" aria-label="Previous field"></button>
+          <button class="hotspot" type="button" data-btn="ok" aria-label="Confirm"></button>
+          <button class="hotspot" type="button" data-btn="down" aria-label="Next field"></button>
+          <button class="hotspot" type="button" data-btn="menu" aria-label="Clear field"></button>
+        </div>
+
+        <div class="device discman" id="music">
+          <p class="note note--discman" aria-hidden="true">Press play ♪</p>
+          <div class="discman-art" data-svg="assets/svg/discman.svg"></div>
+          <div class="discman-display" aria-hidden="true">
+            <span class="dm-track"><span class="dm-track-text">NO DISC</span></span>
+            <span class="dm-time">00:00</span>
+          </div>
+          <button class="hotspot" type="button" data-btn="prev" aria-label="Previous track"></button>
+          <button class="hotspot" type="button" data-btn="play" aria-label="Play" aria-pressed="false"></button>
+          <button class="hotspot" type="button" data-btn="next" aria-label="Next track"></button>
+          <button class="hotspot" type="button" data-btn="stop" aria-label="Stop"></button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 HardStone · Hand-made with HTML, CSS &amp; JavaScript. No frameworks.</p>
+  </footer>
+
+  <!-- ───── TV screens (edit the text here) ───── -->
+
+  <template id="tpl-boot">
+    <div class="boot">
+      <div class="boot-icon" data-sprite="cartridge"></div>
+      <p class="boot-title blink">Insert cartridge</p>
+      <p class="boot-hint">Pick a cartridge above to start</p>
+    </div>
+  </template>
+
+  <template id="tpl-info">
+    <article class="info">
+      <header class="info-head">
+        <div class="avatar" data-sprite="avatar"></div>
+        <div>
+          <p class="screen-kicker">Player 1</p>
+          <h2 class="screen-title">Paul Suarez</h2>
+          <p class="info-aka">aka <strong>HardStone</strong></p>
+        </div>
+      </header>
+      <dl class="stats">
+        <div><dt>Class</dt><dd>Design Engineer · Senior UX/UI</dd></div>
+        <div><dt>Base</dt><dd>Bogotá, Colombia</dd></div>
+        <div><dt>Status</dt><dd class="status-online">Available for freelance</dd></div>
+      </dl>
+      <h3 class="screen-sub">Skills</h3>
+      <ul class="bars" role="list">
+        <li style="--v: 95"><span>UX / UI</span><i></i></li>
+        <li style="--v: 99"><span>CSS</span><i></i></li>
+        <li style="--v: 95"><span>HTML</span><i></i></li>
+        <li style="--v: 85"><span>UI research</span><i></i></li>
+        <li style="--v: 80"><span>Illustration</span><i></i></li>
+      </ul>
+      <p class="info-bio">Design engineer living between the design file and the browser: UI research, design systems and hand-crafted CSS.</p>
+    </article>
+  </template>
+
+  <template id="tpl-links">
+    <nav class="links" aria-label="Links">
+      <p class="screen-kicker">Options</p>
+      <h2 class="screen-title">Links</h2>
+      <ul class="link-list" role="list"></ul>
+    </nav>
+  </template>
+</body>
+</html>

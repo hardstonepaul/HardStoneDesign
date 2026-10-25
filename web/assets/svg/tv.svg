@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 416">
+  <!-- PLACEHOLDER: replace with your Illustrator export (keep the group ids) -->
+  <rect id="frame" width="500" height="416" rx="16" fill="#1e1e1e"/>
+  <rect id="bezel" x="26" y="20" width="448" height="360" rx="16" fill="#29292e"/>
+  <!-- screen: the HTML screen is placed exactly over this shape's bounding box -->
+  <path id="screen" d="M52 32q198-10 396 0 14 1 15 16 7 152 0 304-1 16-17 18-196 10-392 0-16-2-17-18-7-152 0-304 1-15 15-16z" fill="#8e8e8e"/>
+  <g id="knobs" fill="#3a3a3f">
+    <rect x="250" y="386" width="40" height="12" rx="6"/>
+    <rect x="293" y="386" width="40" height="12" rx="6"/>
+    <rect x="342" y="386" width="40" height="12" rx="6"/>
+    <rect x="385" y="386" width="40" height="12" rx="6"/>
+  </g>
+  <circle id="power-led" cx="446" cy="392" r="8" fill="#3a3a3f"/>
+</svg>

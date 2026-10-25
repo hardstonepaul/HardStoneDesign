@@ -1,0 +1,123 @@
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+
+  html {
+    color-scheme: dark;
+    text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    interpolate-size: allow-keywords;
+  }
+
+  body { min-height: 100svh; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  img, svg, video, canvas { display: block; max-width: 100%; }
+  input, button, textarea, select { font: inherit; color: inherit; }
+  button { cursor: pointer; background: none; border: 0; padding: 0; }
+  fieldset { border: 0; padding: 0; min-inline-size: 0; }
+  [hidden] { display: none !important; }
+  :where(ul, ol)[role="list"] { list-style: none; padding: 0; }
+  h1, h2, h3 { line-height: 1.1; text-wrap: balance; }
+  p { text-wrap: pretty; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* SVGs are injected by js/svg.js: the host keeps the artwork's aspect ratio */
+[data-svg] {
+  display: block;
+  aspect-ratio: var(--ar, auto);
+
+  & > svg { width: 100%; height: 100%; overflow: visible; }
+}
+
+.visually-hidden {
+  position: absolute !important;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  inset: 1rem auto auto 1rem;
+  z-index: 100;
+  padding: 0.5em 1em;
+  background: var(--cart-yellow);
+  color: var(--plum-900);
+  font-weight: 700;
+  border-radius: 0.5rem;
+  translate: 0 -200%;
+  transition: translate 0.2s var(--ease-out);
+
+  &:focus-visible { translate: 0 0; }
+}
+
+.sound-toggle {
+  position: fixed;
+  inset: 1rem 1rem auto auto;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.45em 0.8em;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--plum-900) 75%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in oklch, var(--gray-50) 18%, transparent);
+  font: 400 0.75rem/1 var(--font-pixel);
+  letter-spacing: 0.04em;
+  transition: background 0.2s, border-color 0.2s;
+
+  & svg {
+    inline-size: 1.15rem;
+    fill: currentColor;
+    stroke: currentColor;
+    stroke-width: 0;
+  }
+
+  & .wave {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.25;
+  }
+
+  &[aria-pressed="true"] {
+    border-color: var(--cart-yellow);
+
+    & .wave { opacity: 1; }
+  }
+
+  &:hover { background: var(--plum-800); }
+}
+
+.site-footer {
+  padding: 2rem 1rem 2.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  background: var(--wood-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

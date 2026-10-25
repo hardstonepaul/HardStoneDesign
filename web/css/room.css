@@ -1,0 +1,224 @@
+/* §1 · Gaming room
+   The stage keeps the artboard ratio (521 × 649) and every device is placed in % of it,
+   so the whole scene scales as one piece. Sizes inside use cqi (1% of the stage width). */
+
+.room {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding-block: 3.5rem 2rem;
+  overflow: clip;
+  background:
+    radial-gradient(55% 40% at 50% 64%, var(--screen-glow), transparent 70%),
+    var(--room-bg) center / cover no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 46px, oklch(from var(--lavender) l c h / 0.035) 46px 48px),
+    linear-gradient(var(--plum-800), var(--plum-900));
+}
+
+/* Portrait phones: the scene is width-bound, don't stretch the room to full height */
+@media (max-aspect-ratio: 3 / 4) {
+  .room { min-height: auto; padding-block: 4.5rem 3rem; }
+}
+
+.room-stage {
+  position: relative;
+  inline-size: min(100% - 2rem, 860px, (100svh - 5.5rem) * 521 / 649);
+  aspect-ratio: 521 / 649;
+  container: stage / inline-size;
+
+  & > * { position: absolute; }
+
+  /* TV stand (placeholder until the room background exists) */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto -6% -3.2% -6%;
+    block-size: 3.6%;
+    border-radius: 1cqi 1cqi 0.4cqi 0.4cqi;
+    background: linear-gradient(var(--wood), var(--wood-dark));
+    box-shadow: 0 2cqi 4cqi rgb(0 0 0 / 0.45);
+    z-index: 0;
+  }
+}
+
+/* ───── Logo ───── */
+.logo {
+  inset-inline: 0;
+  top: 5.2%;
+  z-index: 1;
+  text-align: center;
+  font: 300 15.6cqi/1 var(--font-ui);
+  letter-spacing: -0.035em;
+  color: var(--gray-0);
+  text-shadow: 0 0.6cqi 2cqi rgb(0 0 0 / 0.35);
+}
+
+/* ───── Cartridges (menu) ───── */
+.cart-shelf { inset: 0; pointer-events: none; z-index: 6; }
+
+.cart-body {
+  position: relative;
+  display: block;
+}
+
+.cart-label {
+  position: absolute;
+  left: var(--label-x, 11%);
+  top: var(--label-y, 14%);
+  inline-size: var(--label-w, 78%);
+  block-size: var(--label-h, 58%);
+  display: grid;
+  place-items: center;
+  padding-inline: 2%;
+  font: 700 1.75cqi/1 var(--font-pixel);
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--plum-900);
+  pointer-events: none;
+}
+
+.cart {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  inline-size: 14.6cqi;
+  pointer-events: auto;
+  filter: drop-shadow(0 0.7cqi 0.6cqi rgb(0 0 0 / 0.35));
+  transition: translate 0.3s var(--ease-back), rotate 0.3s var(--ease-back);
+
+  &[aria-pressed="false"]:is(:hover, :focus-visible) {
+    translate: 0 -1.4cqi;
+    rotate: -4deg;
+  }
+
+  /* Empty spot left on the shelf while the cartridge is in the console */
+  &[aria-pressed="true"] {
+    filter: none;
+
+    & .cart-body { opacity: 0; }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 4% 2% 4%;
+      border: 0.35cqi dashed oklch(from var(--cart-yellow) l c h / 0.45);
+      border-radius: 1cqi;
+      transition: border-color 0.2s;
+    }
+
+    &:hover::before { border-color: var(--cart-yellow); }
+  }
+}
+
+/* Cartridge clone used during the flight to / from the console */
+.flying-cart {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 1.2cqi 1cqi rgb(0 0 0 / 0.4));
+}
+
+/* ───── Cables ───── */
+.cables {
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  z-index: 3;
+  fill: none;
+  stroke: #2b2430;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+/* ───── Console with face ───── */
+.console {
+  left: 36.9%;
+  top: 25%;
+  inline-size: 27.4%;
+  z-index: 4;
+}
+
+.console-art {
+  position: relative;
+  z-index: 1;
+  transform-origin: 50% 100%;
+}
+
+.console-slot {
+  position: absolute;
+  z-index: 0;
+  left: var(--slot-x, 22%);
+  top: var(--slot-y, 17%);
+  inline-size: var(--slot-w, 50%);
+  block-size: var(--slot-h, 3%);
+}
+
+.slot-cart {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  inline-size: 13.8cqi;
+  translate: -50% 34%;
+  rotate: -3deg;
+  transition: translate 0.25s var(--ease-out);
+
+  &:hover, &:focus-visible { translate: -50% 24%; }
+}
+
+.console svg {
+  & [data-part="face"] {
+    translate: calc(var(--look-x, 0) * 2px) calc(var(--look-y, 0) * 1.5px);
+    transition: translate 0.2s var(--ease-out);
+  }
+
+  & :is([data-part="eye-left"], [data-part="eye-right"]) {
+    transform-box: fill-box;
+    transform-origin: center;
+    translate: calc(var(--look-x, 0) * 5px) calc(var(--look-y, 0) * 4px);
+    transition: translate 0.12s var(--ease-out), scale 0.07s linear;
+  }
+
+  &.is-blinking :is([data-part="eye-left"], [data-part="eye-right"]) { scale: 1 0.12; }
+
+  & [data-part="power-led"] { transition: fill 0.3s; }
+}
+
+/* Mouth expressions: only applies if the SVG has mouth-smile / mouth-o / mouth-happy groups */
+.console {
+  & [data-part^="mouth-"] { display: none; }
+  &[data-mood="smile"] [data-part="mouth-smile"],
+  &[data-mood="o"] [data-part="mouth-o"],
+  &[data-mood="happy"] [data-part="mouth-happy"] { display: inline; }
+
+  &.is-on [data-part="power-led"] {
+    fill: var(--red-500);
+    filter: drop-shadow(0 0 3px var(--red-400));
+  }
+}
+
+/* ───── Controllers ───── */
+.controller {
+  z-index: 4;
+  filter: drop-shadow(0 0.5cqi 0.5cqi rgb(0 0 0 / 0.35));
+}
+
+.controller--left { left: 18.4%; top: 33.6%; inline-size: 14.2%; rotate: -6deg; }
+.controller--right { left: 65.6%; top: 32.4%; inline-size: 14.2%; rotate: 5deg; }
+
+/* ───── TV ───── */
+.tv {
+  left: 1.9%;
+  top: 33.6%;
+  inline-size: 96.2%;
+  z-index: 2;
+  filter: drop-shadow(0 1.5cqi 2.5cqi rgb(0 0 0 / 0.45));
+
+  &.is-on [data-part="power-led"] {
+    fill: var(--red-500);
+    filter: drop-shadow(0 0 4px var(--red-400));
+  }
+}

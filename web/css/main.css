@@ -1,0 +1,8 @@
+/* HardStone · cascade order: later layers win, regardless of selector specificity */
+@layer reset, tokens, base, components, screens, utilities;
+
+@import url("tokens.css") layer(tokens);
+@import url("base.css") layer(base);
+@import url("room.css") layer(components);
+@import url("desk.css") layer(components);
+@import url("screen.css") layer(screens);
