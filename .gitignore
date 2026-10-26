@@ -4,3 +4,9 @@
 # OS / editor clutter
 Thumbs.db
 .DS_Store
+
+# Music for the Discman: uploaded to the live site only, not published in the repo
+web/assets/audio/*.mp3
+web/assets/audio/*.ogg
+web/assets/audio/*.m4a
+web/assets/audio/*.wav

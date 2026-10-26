@@ -21,7 +21,7 @@ It's a **90s gaming room** built with plain HTML, CSS and JavaScript: no framewo
 
 **The desk**
 - **Beeper:** the contact form, one field per page on the green LCD, driven by the beeper's own buttons. It posts to `contact.php` (PHP `mail()`, with a spam trap and a rate limit). Without PHP, it falls back to `mailto:`.
-- **Discman:** a music player. The CD spins under the clear lid and the LCD lights up. With no tracks configured, it plays a synthesized lo-fi demo loop.
+- **Discman:** a music player. The CD spins under the clear lid and the LCD lights up. After the songs, a synthesized lo-fi demo loop plays as the last track.
 
 **Sound:** all effects are synthesized with the Web Audio API (no audio files). They're on by default, with a toggle.
 
@@ -95,7 +95,7 @@ design elements.ai    source artwork (Adobe Illustrator)
 | My info / Links texts | `<template>`s at the bottom of `web/index.html` |
 | Projects (add more objects to extend the grid) | `web/js/works-data.js` |
 | Contact email, social links | `web/contact.php` (recipient) and `web/js/config.js` (links, mailto fallback) |
-| Music tracks | `TRACKS` in `web/js/discman.js` (files in `web/assets/audio/`) |
+| Music tracks | `TRACKS` in `web/js/discman.js`, files in `web/assets/audio/`. Audio files are git-ignored (licensed for the live site only), so in a fresh clone those tracks show "DISC ERROR" and only the demo plays. |
 | Colours, fonts, backgrounds | `web/css/tokens.css` |
 | Artwork | `web/assets/svg/`: same file names; positions use `data-box` attributes in `index.html` (see `PLAN.md` §2) |
 

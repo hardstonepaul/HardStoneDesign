@@ -1,10 +1,13 @@
 // Discman music player. Put your tracks in assets/audio/ and list them here.
-// With no tracks it plays a small synthesized lo-fi demo loop.
+// A small synthesized lo-fi demo loop always comes last in the playlist.
 import { placeByBox } from './svg.js';
 import { audioContext, noise } from './sfx.js';
 
 const TRACKS = [
   // { title: 'Track name', src: 'assets/audio/track-01.mp3' },
+  { title: 'All In · Everet Almond', src: 'assets/audio/All In - Everet Almond.mp3' },
+  { title: 'Delayed Baggage · Ryan Stasik', src: 'assets/audio/Delayed Baggage - Ryan Stasik.mp3' },
+  { title: 'Density & Time · LITE BRITE', src: 'assets/audio/LITE BRITE - Density & Time.mp3' },
 ];
 
 const pad = (n) => String(Math.floor(n)).padStart(2, '0');
@@ -89,8 +92,9 @@ export function initDiscman(root) {
   const timeText = root.querySelector('.dm-time');
   const playBtn = root.querySelector('[data-btn="play"]');
   const audio = new Audio();
-  const demo = TRACKS.length ? null : createDemo();
-  const playlist = TRACKS.length ? TRACKS : [{ title: 'DEMO · HARDSTONE LO-FI' }];
+  const demo = createDemo();
+  // Your tracks first, then the synthesized demo loop as the last "track"
+  const playlist = [...TRACKS, { title: 'DEMO · HARDSTONE LO-FI', demo: true }];
   let index = 0;
   let playing = false;
   let timer = 0;
@@ -104,7 +108,8 @@ export function initDiscman(root) {
     for (const type of ['pointerup', 'pointerleave', 'blur']) btn.addEventListener(type, () => btn.classList.remove('is-pressed'));
   }
 
-  const elapsed = () => (demo ? demo.time : audio.currentTime);
+  const track = () => playlist[index];
+  const elapsed = () => (track().demo ? demo.time : audio.currentTime);
 
   function render() {
     root.classList.toggle('is-playing', playing);
@@ -115,9 +120,12 @@ export function initDiscman(root) {
   }
 
   async function play() {
-    if (demo) demo.start();
+    const t = track();
+    trackText.textContent = `${pad(index + 1)} ${t.title}`; // show it right away, songs may take a moment to load
+    if (t.demo) demo.start();
     else {
-      if (!audio.src.endsWith(playlist[index].src)) audio.src = playlist[index].src;
+      const src = new URL(t.src, document.baseURI).href;
+      if (audio.src !== src) audio.src = src;
       try { await audio.play(); } catch { trackText.textContent = 'DISC ERROR'; return; }
     }
     playing = true;
@@ -127,7 +135,7 @@ export function initDiscman(root) {
   }
 
   function pause({ reset = false } = {}) {
-    if (demo) demo.stop();
+    if (track().demo) demo.stop();
     else { audio.pause(); if (reset) audio.currentTime = 0; }
     playing = false;
     clearInterval(timer);
@@ -136,10 +144,9 @@ export function initDiscman(root) {
   }
 
   function skip(dir) {
-    index = (index + dir + playlist.length) % playlist.length;
     const wasPlaying = playing;
-    pause({ reset: true });
-    if (!demo) audio.src = playlist[index].src;
+    pause({ reset: true }); // stop the current track (song or demo) before moving on
+    index = (index + dir + playlist.length) % playlist.length;
     if (wasPlaying) play();
     else render();
   }

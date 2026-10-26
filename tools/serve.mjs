@@ -20,6 +20,7 @@ const types = {
   '.woff2': 'font/woff2',
   '.mp3': 'audio/mpeg',
   '.ogg': 'audio/ogg',
+  '.wav': 'audio/wav',
 };
 
 createServer(async (req, res) => {
