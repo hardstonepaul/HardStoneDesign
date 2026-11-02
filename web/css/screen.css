@@ -188,9 +188,10 @@
 .avatar {
   flex: none;
   inline-size: clamp(56px, 20cqi, 130px);
-  padding: 1.5cqi;
-  background: var(--purple-900);
-  border: 2px solid var(--purple-300);
+  block-size: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .info-aka { color: var(--screen-dim); }
