@@ -49,13 +49,13 @@
 .logo {
   inset-inline: 0;
   /* Baseline just below the cartridges' top edge: they only overlap the bottom of the letters */
-  top: -5.3%;
+  top: -10.2%;
   z-index: 1;
   text-align: center;
-  font: 300 19.2cqi/1 var(--font-ui);
-  letter-spacing: -0.035em;
-  color: var(--gray-0);
-  text-shadow: 0 0.6cqi 2cqi rgb(0 0 0 / 0.35);
+  font: 400 22.78cqi/1 var(--font-logo);
+  letter-spacing: -0.03em;
+  /* Painted onto the wall: plum ink at a third */
+  color: rgb(from var(--plum-900) r g b / 0.33);
 }
 
 /* ───── Cartridges (menu) ───── */
@@ -66,21 +66,15 @@
   display: block;
 }
 
+/* The label is drawn into each cartridge's artwork; the text stays for screen readers */
 .cart-label {
   position: absolute;
-  left: var(--label-x, 11%);
-  top: var(--label-y, 14%);
-  inline-size: var(--label-w, 78%);
-  block-size: var(--label-h, 58%);
-  display: grid;
-  place-items: center;
-  padding-inline: 2%;
-  font: 700 2.2cqi/1 var(--font-pixel);
+  inset: 50% auto auto 50%;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--plum-900);
-  pointer-events: none;
 }
 
 .cart {

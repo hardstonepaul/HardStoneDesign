@@ -8,12 +8,12 @@
   <meta name="theme-color" content="#211a21">
   <meta property="og:title" content="HardStone · Paul Suarez">
   <meta property="og:description" content="Design Engineer, Senior UX/UI designer and CSS lover. Insert a cartridge.">
-  <link rel="icon" href="assets/svg/cartridge.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/svg/cartridge-y.svg" type="image/svg+xml">
 
   <!-- TODO: self-host these as woff2 in assets/fonts before launch -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300..700&family=VT323&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@400&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300..700&family=VT323&display=swap">
 
   <link rel="stylesheet" href="css/main.css">
   <script type="module" src="js/main.js"></script>
@@ -31,19 +31,18 @@
   <main>
     <!-- §1 · Gaming room: cartridges (menu) → console → TV -->
     <section class="room" id="room" aria-label="Gaming room">
-      <!-- data-box-label: blue label area in cartridge.svg viewBox units -->
-      <div class="room-stage" data-box-label="21.52 19.69 240.18 103.83">
+      <div class="room-stage">
         <h1 class="logo">HardStone <span class="visually-hidden">· Paul Suarez, Design Engineer</span></h1>
 
         <nav class="cart-shelf" aria-label="Main menu">
           <button class="cart" type="button" data-cart="info" aria-pressed="false" aria-controls="tv-screen" style="--x: 16.3%; --y: 7%; --i: 0">
-            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">My info</span></span>
+            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge-m.svg"></span><span class="cart-label">My info</span></span>
           </button>
           <button class="cart" type="button" data-cart="works" aria-pressed="false" aria-controls="tv-screen" style="--x: 40.9%; --y: 5.8%; --i: 1">
-            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">Works</span></span>
+            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge-w.svg"></span><span class="cart-label">Works</span></span>
           </button>
           <button class="cart" type="button" data-cart="links" aria-pressed="false" aria-controls="tv-screen" style="--x: 64%; --y: 7%; --i: 2">
-            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label">Links</span></span>
+            <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge-l.svg"></span><span class="cart-label">Links</span></span>
           </button>
         </nav>
 
@@ -57,7 +56,7 @@
         <div class="console" data-mood="smile" data-box-slot="117.7 40 140 4" data-ports="86 140 300 128">
           <div class="console-slot">
             <button class="slot-cart" type="button" hidden aria-label="Eject cartridge" title="Eject">
-              <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge.svg"></span><span class="cart-label"></span></span>
+              <span class="cart-body"><span class="cart-art" data-svg="assets/svg/cartridge-m.svg"></span><span class="cart-label"></span></span>
             </button>
           </div>
           <div class="console-art" data-svg="assets/svg/console.svg"></div>

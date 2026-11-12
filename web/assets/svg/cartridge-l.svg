@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 230.27 145.88">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e19b29;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #ca871c;
+      }
+
+      .cls-1, .cls-3 {
+        stroke-linejoin: round;
+      }
+
+      .cls-4, .cls-3 {
+        fill: #ca871c;
+      }
+
+      .cls-5 {
+        fill: #1d183f;
+      }
+
+      .cls-6 {
+        isolation: isolate;
+      }
+
+      .cls-7 {
+        fill: #a82c22;
+      }
+
+      .cls-8 {
+        fill: #fff;
+        mix-blend-mode: screen;
+        opacity: .25;
+      }
+
+      .cls-2 {
+        fill: #dd961a;
+        filter: url(#drop-shadow-1);
+        stroke-miterlimit: 10;
+        stroke-width: .5px;
+      }
+
+      .cls-9 {
+        fill: #8c5200;
+      }
+
+      .cls-10 {
+        fill: #ffd800;
+      }
+
+      .cls-3 {
+        stroke: #dd961a;
+        stroke-linecap: round;
+      }
+    </style>
+    <filter id="drop-shadow-1" x="13.81" y="12.03" width="202.65" height="91.58" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="-.8"/>
+      <feGaussianBlur result="blur" stdDeviation="0"/>
+      <feFlood flood-color="#ca871c" flood-opacity="1"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="cls-6">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Layer_1-2" data-name="Layer 1">
+        <g>
+          <polygon class="cls-3" points="229.77 112.83 225.51 120.94 115.13 120.94 115.13 112.83 229.77 112.83"/>
+          <polygon class="cls-3" points=".5 112.83 4.76 120.94 115.13 120.94 115.13 112.83 .5 112.83"/>
+          <path class="cls-1" d="M.5,3.94v108.89h14.11v26.93h201.05v-26.93h14.11V3.94c0-1.9-1.54-3.44-3.44-3.44H3.94C2.04.5.5,2.04.5,3.94Z"/>
+          <rect class="cls-2" x="14.06" y="13.08" width="202.15" height="90.28" rx="10.79" ry="10.79"/>
+          <g>
+            <polygon class="cls-9" points="20.95 145.17 16.42 140.47 214.54 140.47 210.01 145.17 20.95 145.17"/>
+            <path class="cls-4" d="M212.87,141.18l-3.16,3.28H21.25l-3.16-3.28h194.79M216.21,139.76H14.75l5.89,6.12h189.67l5.89-6.12h0Z"/>
+          </g>
+          <rect class="cls-10" x="17.5" y="16.01" width="195.27" height="84.42" rx="7.88" ry="7.88"/>
+          <g>
+            <path class="cls-5" d="M62.69,62.83h12.82l-1.89,7.31h-20.54l5.01-33.51h8.53l-3.93,26.21Z"/>
+            <path class="cls-5" d="M84.56,70.13h-8.53l5.01-33.51h8.53l-5.01,33.51Z"/>
+            <path class="cls-5" d="M111.89,55.72l2.91-19.11h8.07l-5.06,33.05-5.42,1.12-13.69-19.36-2.86,18.7h-8.07l5.06-32.9,5.26-1.12,13.79,19.62Z"/>
+            <path class="cls-5" d="M132.58,50.36l13.23-14.15,9.4,1.12-14.87,15.38,11.03,17.42h-10.01l-7.61-12.57-2.71,3.01-1.43,9.55h-8.53l5.01-33.51h8.53l-2.04,13.74Z"/>
+            <path class="cls-5" d="M175.7,45.81c-2.35-1.74-4.34-2.55-6.59-2.71-1.99-.15-3.73,1.12-3.83,2.81-.1,1.48.61,2.35,4.09,4.9,2.61,1.89,3.78,2.96,4.75,4.19,1.17,1.58,1.89,3.52,1.89,5.26,0,3.98-1.69,6.95-5.06,8.84-2.2,1.28-4.5,1.79-7.97,1.79-2.5,0-6.54-.92-9.04-2.15-1.02-.46-1.38-.66-2.45-1.43l2.09-7.82c2.3,2.45,5.57,4.09,8.22,4.09,2.25,0,3.83-1.38,3.83-3.27,0-1.23-.61-2.09-2.2-3.32-3.17-2.45-4.29-3.37-5.42-4.5-1.89-1.89-2.66-3.78-2.66-6.59,0-3.12,1.74-6.28,4.44-8.07,1.79-1.17,4.75-1.99,7.25-1.99,4.09,0,6.49.61,10.12,2.5l-1.48,7.46Z"/>
+          </g>
+          <polygon class="cls-8" points="41.47 139.76 106.38 .5 162.34 .5 105.34 139.76 41.47 139.76"/>
+          <g>
+            <rect class="cls-7" x="182.7" y="72.3" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="188.74" y="78.34" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="194.79" y="72.3" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="200.83" y="78.34" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="206.72" y="72.3" width="6.04" height="6.04"/>
+          </g>
+          <g>
+            <rect class="cls-7" x="17.5" y="24.48" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="23.54" y="30.52" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="29.59" y="24.48" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="35.63" y="30.52" width="6.04" height="6.04"/>
+            <rect class="cls-7" x="41.52" y="24.48" width="6.04" height="6.04"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 230.27 145.88">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #ffd800;
+        stroke: #faa41e;
+      }
+
+      .cls-1, .cls-3 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-4 {
+        isolation: isolate;
+      }
+
+      .cls-5 {
+        fill: #fff;
+        mix-blend-mode: screen;
+        opacity: .25;
+      }
+
+      .cls-2 {
+        filter: url(#drop-shadow-1);
+        stroke-miterlimit: 10;
+        stroke-width: .5px;
+      }
+
+      .cls-6 {
+        fill: #74d1f6;
+      }
+
+      .cls-7, .cls-3 {
+        fill: #faa41e;
+      }
+
+      .cls-3 {
+        stroke: #ffd800;
+      }
+
+      .cls-8 {
+        fill: #b66113;
+      }
+    </style>
+    <filter id="drop-shadow-1" x="13.81" y="12.03" width="202.65" height="91.58" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="-.8"/>
+      <feGaussianBlur result="blur" stdDeviation="0"/>
+      <feFlood flood-color="#faa41e" flood-opacity="1"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="cls-4">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Layer_1-2" data-name="Layer 1">
+        <g>
+          <polygon class="cls-3" points="229.77 112.83 225.51 120.94 115.13 120.94 115.13 112.83 229.77 112.83"/>
+          <polygon class="cls-3" points=".5 112.83 4.76 120.94 115.13 120.94 115.13 112.83 .5 112.83"/>
+          <path class="cls-1" d="M.5,3.94v108.89h14.11v26.93h201.05v-26.93h14.11V3.94c0-1.9-1.54-3.44-3.44-3.44H3.94C2.04.5.5,2.04.5,3.94Z"/>
+          <rect class="cls-2" x="14.06" y="13.08" width="202.15" height="90.28" rx="10.79" ry="10.79"/>
+          <g>
+            <polygon class="cls-8" points="20.95 145.17 16.42 140.47 214.54 140.47 210.01 145.17 20.95 145.17"/>
+            <path class="cls-7" d="M212.87,141.18l-3.16,3.28H21.25l-3.16-3.28h194.79M216.21,139.76H14.75l5.89,6.12h189.67l5.89-6.12h0Z"/>
+          </g>
+          <rect class="cls-6" x="17.5" y="16.01" width="195.27" height="84.42" rx="7.88" ry="7.88"/>
+          <polygon class="cls-5" points="41.47 139.76 106.38 .5 162.34 .5 105.34 139.76 41.47 139.76"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

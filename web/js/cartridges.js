@@ -13,9 +13,7 @@ export function initCartridges({ stage, face, tv, cables }) {
   const consoleArt = consoleEl.querySelector('.console-art');
   const slotCart = consoleEl.querySelector('.slot-cart');
 
-  // Label area of the cartridge art and the slot position on the console
-  // (named groups win; otherwise data-box-label / data-box-slot on the stage / console)
-  setBoxVars(stage, 'label', markerBox(stage.querySelector('.cart-art svg'), 'label', stage));
+  // Slot position on the console (a named group wins; otherwise data-box-slot on the console)
   setBoxVars(consoleEl, 'slot', markerBox(consoleArt.querySelector('svg'), 'slot', consoleEl));
 
   let current = null; // cartridge in the console
@@ -61,7 +59,11 @@ export function initCartridges({ stage, face, tv, cables }) {
     sfx.select();
     face.mood('o');
 
-    // Prepare the console cartridge in its "above the slot" position, invisible, to measure it
+    // Prepare the console cartridge in its "above the slot" position, invisible, to measure it.
+    // Each cartridge has its own colour export, so the slot copies the chosen one's art.
+    const slotArt = slotCart.querySelector('.cart-art');
+    slotArt.replaceChildren(art.firstElementChild.cloneNode(true));
+    slotArt.style.setProperty('--ar', art.style.getPropertyValue('--ar'));
     slotCart.querySelector('.cart-label').textContent = btn.querySelector('.cart-label').textContent;
     slotCart.dataset.cart = id;
     slotCart.hidden = false;
